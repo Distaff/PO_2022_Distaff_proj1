@@ -19,13 +19,11 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     @Override
-    public boolean place(IMapElement entity, IMovableEntity entityInfoPublisher) {
-        if(entity.getPos())     //TODO: check if not out of bounds
-            throw new IllegalArgumentException("Entity cannot be placed on position: " + entity.getPos().toString());
-        this.entityMap.put(entity.getPos(), entity);
-        if(entityInfoPublisher != null){
-            entityInfoPublisher.addObserver(this);
-        }
+    public boolean place(Animal animal) {
+        if(animal.getPos())     //TODO: check if not out of bounds
+            throw new IllegalArgumentException("Entity cannot be placed on position: " + animal.getPos().toString());
+        this.entityMap.put(animal.getPos());
+        animal.addObserver(this);
         return true;
     }
 

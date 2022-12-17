@@ -2,8 +2,11 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Animal implements IMapElement {
+    private SimulationOptions simulationOptions;
     private IWorldMap worldMap;
     private List<IPositionChangeObserver> observerList = new ArrayList<>();
     MapDirection orientation = MapDirection.NORTH;
@@ -15,14 +18,25 @@ public class Animal implements IMapElement {
 
     private int offspringCounter;
     private int grassEaten;
-    private final int dateOfBirth;
-    private final int dateOfDeath;
+    private int dateOfBirth;
+    private int dateOfDeath;
+
+    static int
 
 
+    public Animal(Animal parent1, Animal parent2) {
+        ThreadLocalRandom rand = new ThreadLocalRandom();
+        if(rand.nextInt(2) == 1){
+            Animal tmp = parent1;
+            parent1 = parent2;
+            parent2 = tmp;
+        }
+        int crossPoint = simulationOptions.genotypeSize * (parent1.energy / parent2.energy);
+        java.lang.System.arraycopy(parent1, 0, this.genes, 0, crossPoint);
+        java.lang.System.arraycopy(parent2, crossPoint, this.genes, 0, simulationOptions.genotypeSize);
 
-    public Animal(IWorldMap argWorldMap, Vector2d initPos) {
-        this.pos = initPos;
-        this.worldMap = argWorldMap;
+        int toMutate = rand.nextInt(simulationOptions.genotypeSize + 1);
+        for(int i = 0; i < toMutate; i++){
     }
 
     @Override

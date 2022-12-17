@@ -4,16 +4,13 @@ import java.util.Collection;
 
 public interface IWorldMap {
     /**
-     * Place an entity on the map. If entity can move, it should provide entityInfoPublisher.
+     * Place an animal on the map.
      *
-     * @param entity
-     *            The entity to place on the map.
-     * @param entityInfoPublisher
-     *            Object which will provide info about entity movement through IPositionChangeObserver.
-     *            This can be null if entity is immovable.
+     * @param animal
+     *            The animal to place on the map.
      * @return True if the entity was placed.
      */
-    boolean place(IMapElement entity, IMovableEntity entityInfoPublisher);
+    boolean place(Animal animal);
 
 
     /**
