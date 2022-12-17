@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.ics.oop.Vector2dTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2022-12-05T11:23:18" hostname="DESKTOP-QG9OI0O" time="0.015">
+  <properties/>
+  <testcase name="_lowerLeft()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_subtract()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_toString()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_precedes()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_upperRight()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_opposite()" classname="agh.ics.oop.Vector2dTest" time="0.0"/>
+  <testcase name="_add()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_hashCode()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_equals()" classname="agh.ics.oop.Vector2dTest" time="0.001"/>
+  <testcase name="_follows()" classname="agh.ics.oop.Vector2dTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
