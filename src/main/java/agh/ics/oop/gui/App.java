@@ -24,7 +24,7 @@ public class App extends Application{
     public void init() throws Exception {
         String[] args = getParameters().getRaw().toArray(new String[0]);
         MoveDirection[] directions = null;  //TODO
-        map = new GrassField(10);
+        map = null; //TODO
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
         engine = new SimulationEngine(directions, map, positions);
 

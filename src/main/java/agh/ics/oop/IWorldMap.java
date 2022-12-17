@@ -2,36 +2,33 @@ package agh.ics.oop;
 
 import java.util.Collection;
 
-/**
- * The interface responsible for interacting with the map of the world.
- * Assumes that Vector2d and MoveDirection classes are defined.
- *
- * @author apohllo
- *
- */
 public interface IWorldMap {
     /**
-     * Indicate if any object can move to the given position.
+     * Place an entity on the map. If entity can move, it should provide entityInfoPublisher.
      *
-     * @param position
-     *            The position checked for the movement possibility.
-     * @return True if the object can move to that position.
+     * @param entity
+     *            The entity to place on the map.
+     * @param entityInfoPublisher
+     *            Object which will provide info about entity movement through IPositionChangeObserver.
+     *            This can be null if entity is immovable.
+     * @return True if the entity was placed.
      */
-    boolean canMoveTo(Vector2d position);
+    boolean place(IMapElement entity, IMovableEntity entityInfoPublisher);
+
 
     /**
-     * Place a animal on the map.
+     * Informs entity about resulting position, if it tries to move to specific position.
+     * In most cases, desiredPos will be equal to resultingPos, but sometimes it will be different.
+     * Example: Animal goes out of map bounds, and is teleported to another edge of the map.
      *
-     * @param animal
-     *            The animal to place on the map.
-     * @return True if the animal was placed. The animal cannot be placed if the map is already occupied.
+     * @param desiredPos
+     *            The entity to place on the map.
+     * @return Resulting position
      */
-    boolean place(Animal animal);
+    Vector2d resultingPos(Vector2d desiredPos);
 
     /**
-     * Return true if given position on the map is occupied. Should not be
-     * confused with canMove since there might be empty positions where the animal
-     * cannot move.
+     * Return true if given position on the map is occupied by any entity.
      *
      * @param position
      *            Position to check.
@@ -47,9 +44,6 @@ public interface IWorldMap {
      * @return Object or null if the position is not occupied.
      */
     Object objectAt(Vector2d position);
-
-    Vector2d getLowerLeft();
-    Vector2d getUpperRight();
 
     Collection<IMapElement> getEntitiesOnMap();
 }

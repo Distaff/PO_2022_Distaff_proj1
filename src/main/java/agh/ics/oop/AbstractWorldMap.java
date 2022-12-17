@@ -19,11 +19,13 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     @Override
-    public boolean place(Animal animal) {
-        if(!canMoveTo(animal.getPos()))
-            throw new IllegalArgumentException("Animal cannot be placed on position: " + animal.getPos().toString());
-        this.entityMap.put(animal.getPos(), animal);
-        animal.addObserver(this);
+    public boolean place(IMapElement entity, IMovableEntity entityInfoPublisher) {
+        if(entity.getPos())     //TODO: check if not out of bounds
+            throw new IllegalArgumentException("Entity cannot be placed on position: " + entity.getPos().toString());
+        this.entityMap.put(entity.getPos(), entity);
+        if(entityInfoPublisher != null){
+            entityInfoPublisher.addObserver(this);
+        }
         return true;
     }
 
@@ -35,7 +37,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         this.entityMap.put(newPos, tmp);
         return;
     }
-
     public abstract Vector2d getLowerLeft();
     public abstract Vector2d getUpperRight();
 

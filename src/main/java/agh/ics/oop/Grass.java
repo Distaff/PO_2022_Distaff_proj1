@@ -11,10 +11,7 @@ public class Grass implements IMapElement {
         return this.pos;
     }
 
-    public String toString(){
-        return "*";
-    }
-
+    public String toString(){ return "grass: " + this.pos.toString(); }
     public String textureName(){ return "grass"; }
     public String objectDescription(){ return "grass"; }
 

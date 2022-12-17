@@ -2,42 +2,42 @@ package agh.ics.oop;
 
 public enum MapDirection {
     NORTH,
+    NORTHEAST,
     EAST,
+    SOUTHEAST,
     SOUTH,
-    WEST;
+    SOUTHWEST,
+    WEST,
+    NORTHWEST;
 
-    final String[] NAMES = {"North", "East", "South", "West"};
-    final String[] SHORT_NAMES = {"^", ">", "<", "v"};
-    public String toString(){
-        return NAMES[this.ordinal()];
-    }
+    final String[] SYMBOLS = {"↑", "↗", "→","↘", "↓","↙", "←", "↖"};
+    final String[] NAMES = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+    final Vector2d[] UNITVECTORS = {
+            new Vector2d(0,1),
+            new Vector2d(1,1),
+            new Vector2d(1,0),
+            new Vector2d(1,-1),
+            new Vector2d(0,-1),
+            new Vector2d(-1,-1),
+            new Vector2d(-1,0),
+            new Vector2d(-1,1),
+    };
 
-    public String shortRepresentation (){
-        return SHORT_NAMES[this.ordinal()];
-    }
+    public String toString(){ return SYMBOLS[this.ordinal()]; }
+    public String shortRepresentation(){ return NAMES[this.ordinal()]; }
 
-    MapDirection next(){
-        return this.values()[(this.ordinal() + 1) % this.values().length];
-    }
+    MapDirection next(){ return this.rotate(1); }
+    MapDirection prev(){ return this.rotate(-1); }
 
-    MapDirection prev(){
-        if (this.ordinal() > 0){
-            return this.values()[this.ordinal() - 1];
-        }
-        else return this.values()[this.values().length - 1];
+    MapDirection rotate(int rotationValue){
+        int res = this.ordinal() + rotationValue;
+        res %= this.values().length;
+        res += this.values().length;    //dealing with negative values (for example: rotate(-5) on enum with value 1)
+        res %= this.values().length;
+        return this.values()[res];
     }
 
     Vector2d toUnitVector(){
-        switch(this){
-            case NORTH:
-                return new Vector2d(0,1);
-            case EAST:
-                return new Vector2d(1,0);
-            case SOUTH:
-                return new Vector2d(0,-1);
-            case WEST:
-                return new Vector2d(-1,0);
-        }
-        return null;
+        return UNITVECTORS[this.ordinal()];
     }
 }
