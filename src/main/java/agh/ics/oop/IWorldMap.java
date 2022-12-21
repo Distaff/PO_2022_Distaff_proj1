@@ -14,15 +14,15 @@ public interface IWorldMap {
 
 
     /**
-     * Informs entity about resulting position, if it tries to move to specific position.
-     * In most cases, desiredPos will be equal to resultingPos, but sometimes it will be different.
+     * Informs map about the fact, that entity is changing position.
+     * In some cases (teleportation in CursedGateway) this will result with energy loss.
      * Example: Animal goes out of map bounds, and is teleported to another edge of the map.
      *
-     * @param desiredPos
-     *            The entity to place on the map.
+     * @param pos
+     *            Position on which the animal wants to go
      * @return Resulting position
      */
-    Vector2d resultingPos(Vector2d desiredPos);
+    Vector2d stepsAt(Vector2d pos);
 
     /**
      * Return true if given position on the map is occupied by any entity.
@@ -33,14 +33,16 @@ public interface IWorldMap {
      */
     boolean isOccupied(Vector2d position);
 
-    /**
+    /*
      * Return an object at a given position.
      *
      * @param position
      *            The position of the object.
      * @return Object or null if the position is not occupied.
      */
-    Object objectAt(Vector2d position);
+    //Object objectAt(Vector2d position);
 
-    Collection<IMapElement> getEntitiesOnMap();
+    SimulationOptions getSimulationOptions();
+    int getWorldAge();
+    Collection<Animal> getAnimalsOnMap();
 }

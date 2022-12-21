@@ -37,6 +37,10 @@ public enum MapDirection {
         return this.values()[res];
     }
 
+    MapDirection rotate(Rotations rotationValue){
+        return this.rotate(rotationValue.ordinal());
+    }
+
     Vector2d toUnitVector(){
         return UNITVECTORS[this.ordinal()];
     }

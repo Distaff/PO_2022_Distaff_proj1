@@ -2,13 +2,11 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.*;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class App extends Application{
     @Override
     public void init() throws Exception {
         String[] args = getParameters().getRaw().toArray(new String[0]);
-        MoveDirection[] directions = null;  //TODO
+        Rotations[] directions = null;  //TODO
         map = null; //TODO
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
         engine = new SimulationEngine(directions, map, positions);
