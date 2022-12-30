@@ -24,4 +24,8 @@ public enum Rotations {
         Random rand = new Random();
         return Rotations.values()[rand.nextInt(Rotations.values().length)];
     }
+
+    public String toString(){
+        return Integer.toString(this.ordinal());
+    }
 }

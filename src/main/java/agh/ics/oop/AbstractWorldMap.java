@@ -1,22 +1,16 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractWorldMap implements IWorldMap {
     private MapVisualizer drawEngine = new MapVisualizer(this);
+    private SingleField[][] mapFields;
+    private Set<Vector2d> occupiedFields = new HashSet<>();
+    private SimulationOptions simulationOptions;
     private int worldAge;
 
     @Override
-    public boolean isOccupied(Vector2d position) {
-        return (objectAt(position) != null);
-    }
-
-    @Override
-    public Object objectAt(Vector2d position) {
-        return null;
-    }   //TODO
+    public boolean isOccupied(Vector2d position) { return false; }
 
     @Override
     public boolean place(Animal animal) {
@@ -25,13 +19,22 @@ public abstract class AbstractWorldMap implements IWorldMap {
         //TODO
     }
 
-    public abstract Vector2d getLowerLeft();
-    public abstract Vector2d getUpperRight();
+    public Vector2d stepsAt() {
 
-    public List<Animal> getEntitiesOnMap(){
-        return null;
-    }   //TODO
+    }
+
+    public SingleField fieldAt(Vector2d pos) { return null; }
+
+    public List<SingleField> getOccupiedFields(){
+        List<SingleField> fieldsList = new ArrayList<>();
+        for (Vector2d fieldPos : occupiedFields) {
+            fieldsList.add(this.fieldAt(fieldPos));
+        }
+        return fieldsList;
+    }
+
     public String toString(){
-        return this.drawEngine.draw(getLowerLeft(), getUpperRight());
+        return this.drawEngine.draw(new Vector2d(0, 0),
+            new Vector2d(simulationOptions.mapSizeX(), simulationOptions.mapSizeY()));
     }
 }

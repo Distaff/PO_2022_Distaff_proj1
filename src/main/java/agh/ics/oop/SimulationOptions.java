@@ -12,7 +12,7 @@ public record SimulationOptions(
         int dailyGrassCount,
         int singleGrassEnergy,
         int beginningAnimalCount,
-        int newbornAnimalEnergy,
+        int breedingCost,
         int minBreedingEnergy,
         int minMutationCount,
         int maxMutationCount,

@@ -33,15 +33,6 @@ public interface IWorldMap {
      */
     boolean isOccupied(Vector2d position);
 
-    /*
-     * Return an object at a given position.
-     *
-     * @param position
-     *            The position of the object.
-     * @return Object or null if the position is not occupied.
-     */
-    //Object objectAt(Vector2d position);
-
     SimulationOptions getSimulationOptions();
     int getWorldAge();
     Collection<Animal> getAnimalsOnMap();

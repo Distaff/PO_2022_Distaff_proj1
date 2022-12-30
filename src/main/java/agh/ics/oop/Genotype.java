@@ -32,7 +32,7 @@ public class Genotype {
     public Genotype(Genotype genotype1, Genotype genotype2, float energyRatio){
         this.simulationOptions = genotype1.simulationOptions;
 
-        int crossPoint = (int) (simulationOptions.genotypeSize() * energyRatio);
+        int crossPoint = (int) (simulationOptions.genotypeSize() * energyRatio / (1 + energyRatio));    //if a+b=c and a/b=x:   a = cx/(1+x)
         genes.addAll(genotype1.genes.subList(0, crossPoint));
         genes.addAll(genotype2.genes.subList(crossPoint, simulationOptions.genotypeSize()));
 
@@ -53,5 +53,10 @@ public class Genotype {
         for (int mutatingGene : rand.ints(simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
             genes.set(mutatingGene, genes.get(mutatingGene).randomVal());
         }
+    }
+
+    @Override
+    public String toString(){
+        return genes.toString() + "; current active index: " + currentGene;
     }
 }
