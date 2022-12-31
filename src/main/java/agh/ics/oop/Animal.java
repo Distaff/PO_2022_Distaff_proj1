@@ -18,9 +18,14 @@ public class Animal implements Comparable {
     private int dateOfDeath;
 
     Random rand = new Random();
-    public Animal(IWorldMap worldMap) {
+    public Animal(IWorldMap worldMap, Vector2d pos) {
         if(worldMap == null)
             throw new NullPointerException("Null Pointer Exception during animal creation (worldMap is null)");
+        if(pos == null)
+            throw new NullPointerException("Null Pointer Exception during animal creation (pos is null)");
+
+        this.worldMap = worldMap;
+        this.pos = pos;
 
         this.uuid = UUID.randomUUID();
         genotype = new Genotype(worldMap.getSimulationOptions());
@@ -29,9 +34,10 @@ public class Animal implements Comparable {
         if(parent1 == null || parent2 == null)
             throw new NullPointerException("Null Pointer Exception during animal creation (parent is null)");
 
+        this.worldMap = parent1.worldMap;
+        this.pos = parent1.pos;
         this.uuid = UUID.randomUUID();
         this.dateOfBirth = worldMap.getWorldAge();
-        this.worldMap = parent1.worldMap;
         this.energy = worldMap.getSimulationOptions().breedingCost() * 2;
 
         parent1.childrenIsBorn();
@@ -46,7 +52,7 @@ public class Animal implements Comparable {
             parent2 = tmp;
         }
 
-        float energyRatio = (float) parent1.energy / (float) parent2.energy
+        float energyRatio = (float) parent1.energy / (float) parent2.energy;
         genotype = new Genotype(parent1.genotype, parent2.genotype, energyRatio);
 
         this.orientation.rotate(Rotations.randomVal());
@@ -59,7 +65,7 @@ public class Animal implements Comparable {
 
     public void move(){
         this.orientation.rotate(this.genotype.nextGene());
-        pos = this.worldMap.stepsAt(this.pos.add(this.orientation.toUnitVector()));
+        pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
     }
 
     public void teleported(){
@@ -88,7 +94,7 @@ public class Animal implements Comparable {
         /*
         Using UUID, because TreeSet is broken, and it does not give a **** about Set interface contract and
         the fact that despite comparing two objects returns 0, they still may not be equal in terms of equals();
-        In other words, this comparator may never return 0, because two identical animals could be treated as
+        In other words, this comparator must never return 0, because two identical animals could be treated as
         the same animal.
 
         Three hours of debugging.

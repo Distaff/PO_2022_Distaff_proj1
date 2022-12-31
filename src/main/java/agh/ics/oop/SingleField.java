@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.TreeSet;
 
 public class SingleField {
+
+    //TODO: Trawa, umieranie
     private final IWorldMap worldMap;
     private final Vector2d fieldPos;
 
@@ -15,11 +17,17 @@ public class SingleField {
         this.fieldPos = fieldPos;
     }
 
-    /*
     public List<Animal> getAnimalsOnField(){
         return animalList.stream().toList();
     }
-    */
+
+    void pushAnimal(Animal animal){
+        this.animalList.add(animal);
+    }
+
+    void popAnimal(Animal animal){
+        this.animalList.remove(animal);
+    }
 
     void eatAndBreed(){
         Animal strongest = animalList.pollLast();
@@ -27,7 +35,7 @@ public class SingleField {
 
         if(strongest != null && grassPresent){
             grassPresent = false;
-            strongest.changeEnergy(worldMap.getSimulationOptions().singleGrassEnergy());
+            strongest.eatGrass();
         }
         if(strongest != null && bride != null){
             animalList.add(new Animal(strongest, bride));
@@ -44,6 +52,7 @@ public class SingleField {
     String objectDescription(){
         if (animalList.size() > 1) return animalList.last().objectDescription() + "and " + animalList.size() + "other";
         else if (animalList.size() == 1) return animalList.last().objectDescription();
+        else return "";
     }
 
     String textureName(){

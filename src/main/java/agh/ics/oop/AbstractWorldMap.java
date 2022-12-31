@@ -6,35 +6,79 @@ public abstract class AbstractWorldMap implements IWorldMap {
     private MapVisualizer drawEngine = new MapVisualizer(this);
     private SingleField[][] mapFields;
     private Set<Vector2d> occupiedFields = new HashSet<>();
-    private SimulationOptions simulationOptions;
+    protected SimulationOptions simulationOptions;
     private int worldAge;
 
     @Override
-    public boolean isOccupied(Vector2d position) { return false; }
+    public SimulationOptions getSimulationOptions() { return simulationOptions; }
+    @Override
+    public int getWorldAge() { return worldAge; }
+    @Override
+    public boolean isOccupied(Vector2d position) { return this.occupiedFields.contains(position); }
+
+    protected SingleField fieldAt(Vector2d pos) { return null; }
 
     @Override
-    public boolean place(Animal animal) {
-        if(false)   //TODO: check if not out of bounds
-            throw new IllegalArgumentException("Entity cannot be placed on position: " + animal.getPos().toString());
+    public void growGrass() {
         //TODO
     }
 
-    public Vector2d stepsAt() {
-
+    @Override
+    public void makeFieldsPrivelaged() {
+        //TODO
     }
 
-    public SingleField fieldAt(Vector2d pos) { return null; }
+    @Override
+    public boolean place(Animal animal) {
+        if(animal == null)
+            throw new IllegalArgumentException("Animal cannot be null");
+        if(!animal.getPos().precedes(new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY())) ||
+            !animal.getPos().follows(new Vector2d(0, 0)))
+        {
+            throw new IllegalArgumentException("Animal cannot be placed on position: " + animal.getPos().toString());
+        }
 
-    public List<SingleField> getOccupiedFields(){
+        fieldAt(animal.getPos()).pushAnimal(animal);
+        this.occupiedFields.add(animal.getPos());
+        return true;
+    }
+
+    @Override
+    public abstract Vector2d stepsAt(Animal animal, Vector2d newPos);
+
+    protected void moveAnimal(Animal animal, Vector2d newPos){
+        Vector2d oldPos = animal.getPos();
+
+        fieldAt(oldPos).popAnimal(animal);
+        if(fieldAt(oldPos).isEmpty())
+            occupiedFields.remove(oldPos);
+
+        fieldAt(newPos).pushAnimal(animal);
+        occupiedFields.add(newPos);
+    }
+
+
+    @Override
+    public Collection<SingleField> getOccupiedFields(){
         List<SingleField> fieldsList = new ArrayList<>();
-        for (Vector2d fieldPos : occupiedFields) {
+        for (Vector2d fieldPos : this.occupiedFields) {
             fieldsList.add(this.fieldAt(fieldPos));
         }
         return fieldsList;
     }
 
+    @Override
+    public Collection<Animal> getAnimalsOnMap() {
+        List<Animal> animalList = new ArrayList<>();
+        for (Vector2d fieldPos : this.occupiedFields) {
+            animalList.addAll(this.fieldAt(fieldPos).getAnimalsOnField());
+        }
+        return animalList;
+    }
+
+    @Override
     public String toString(){
         return this.drawEngine.draw(new Vector2d(0, 0),
-            new Vector2d(simulationOptions.mapSizeX(), simulationOptions.mapSizeY()));
+            new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY()));
     }
 }

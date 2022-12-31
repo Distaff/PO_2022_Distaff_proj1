@@ -18,11 +18,13 @@ public interface IWorldMap {
      * In some cases (teleportation in CursedGateway) this will result with energy loss.
      * Example: Animal goes out of map bounds, and is teleported to another edge of the map.
      *
-     * @param pos
+     * @param animal
+     *            Which animal wants to change position
+     * @param newPos
      *            Position on which the animal wants to go
      * @return Resulting position
      */
-    Vector2d stepsAt(Vector2d pos);
+    public Vector2d stepsAt(Animal animal, Vector2d newPos);
 
     /**
      * Return true if given position on the map is occupied by any entity.
@@ -36,4 +38,5 @@ public interface IWorldMap {
     SimulationOptions getSimulationOptions();
     int getWorldAge();
     Collection<Animal> getAnimalsOnMap();
+    Collection<SingleField> getOccupiedFields();
 }
