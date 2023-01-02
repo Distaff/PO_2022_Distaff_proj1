@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface IWorldMap {
     /**
@@ -12,6 +13,8 @@ public interface IWorldMap {
      */
     boolean place(Animal animal);
 
+
+    void grassHasGrown(Vector2d pos);
 
     /**
      * Informs map about the fact, that entity is changing position or is removed.
@@ -45,9 +48,9 @@ public interface IWorldMap {
 
     SimulationOptions getSimulationOptions();
     int getWorldAge();
-    Collection<SingleField> getAllFields();
-    Collection<SingleField> getOccupiedFields();
-    Collection<Animal> getAnimalsOnMap();
+    List<SingleField> getAllFields();
+    List<SingleField> getOccupiedFields();
+    List<Animal> getAnimalsOnMap();
 
     String stats();
 }

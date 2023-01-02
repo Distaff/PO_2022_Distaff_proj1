@@ -28,32 +28,34 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     protected SingleField fieldAt(Vector2d pos) { return null; }
 
-    /*
     @Override
-    public void growGrass() {
-        //TODO
-    }
-
-    @Override
-    public void makeFieldsPrivelaged() {
-        //TODO
-    }
-     */
-
-    @Override
-    public boolean place(Animal animal) {
-        if(animal == null)
-            throw new IllegalArgumentException("Animal cannot be null");
-        if(!animal.getPos().precedes(new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY())) ||
-            !animal.getPos().follows(new Vector2d(0, 0)))
-        {
-            throw new IllegalArgumentException("Animal cannot be placed on position: " + animal.getPos().toString());
+    public List<SingleField> getAllFields(){
+        List<SingleField> fieldsList = new ArrayList<>();
+        for (SingleField[] column : this.mapFields) {
+            fieldsList.addAll(Arrays.stream(column).toList());
         }
-
-        fieldAt(animal.getPos()).pushAnimal(animal);
-        this.occupiedFields.add(animal.getPos());
-        return true;
+        return fieldsList;
     }
+    @Override
+    public List<SingleField> getOccupiedFields(){
+        List<SingleField> fieldsList = new ArrayList<>();
+        for (Vector2d fieldPos : this.occupiedFields) {
+            fieldsList.add(this.fieldAt(fieldPos));
+        }
+        return fieldsList;
+    }
+
+    @Override
+    public List<Animal> getAnimalsOnMap() {
+        List<Animal> animalList = new ArrayList<>();
+        for (Vector2d fieldPos : this.occupiedFields) {
+            animalList.addAll(this.fieldAt(fieldPos).getAnimalsOnField());
+        }
+        return animalList;
+    }
+
+    @Override
+    public void grassHasGrown(Vector2d pos) { this.occupiedFields.add(pos); }
 
     @Override
     public abstract Vector2d stepsAt(Animal animal, Vector2d newPos);
@@ -62,6 +64,21 @@ public abstract class AbstractWorldMap implements IWorldMap {
     public void animalDies(Animal animal) {
         fieldAt(animal.getPos()).popAnimal(animal);
         fieldAt(animal.getPos()).grimReaperHasCame();
+    }
+
+    @Override
+    public boolean place(Animal animal) {
+        if(animal == null)
+            throw new IllegalArgumentException("Animal cannot be null");
+        if(!animal.getPos().precedes(new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY())) ||
+                !animal.getPos().follows(new Vector2d(0, 0)))
+        {
+            throw new IllegalArgumentException("Animal cannot be placed on position: " + animal.getPos().toString());
+        }
+
+        fieldAt(animal.getPos()).pushAnimal(animal);
+        this.occupiedFields.add(animal.getPos());
+        return true;
     }
 
     protected void moveAnimal(Animal animal, Vector2d newPos){
@@ -73,32 +90,6 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
         fieldAt(newPos).pushAnimal(animal);
         occupiedFields.add(newPos);
-    }
-
-    @Override
-    public Collection<SingleField> getAllFields(){
-        List<SingleField> fieldsList = new ArrayList<>();
-        for (SingleField[] column : this.mapFields) {
-            fieldsList.addAll(Arrays.stream(column).toList());
-        }
-        return fieldsList;
-    }
-    @Override
-    public Collection<SingleField> getOccupiedFields(){
-        List<SingleField> fieldsList = new ArrayList<>();
-        for (Vector2d fieldPos : this.occupiedFields) {
-            fieldsList.add(this.fieldAt(fieldPos));
-        }
-        return fieldsList;
-    }
-
-    @Override
-    public Collection<Animal> getAnimalsOnMap() {
-        List<Animal> animalList = new ArrayList<>();
-        for (Vector2d fieldPos : this.occupiedFields) {
-            animalList.addAll(this.fieldAt(fieldPos).getAnimalsOnField());
-        }
-        return animalList;
     }
 
     @Override

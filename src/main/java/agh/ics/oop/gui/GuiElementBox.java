@@ -1,6 +1,5 @@
 package agh.ics.oop.gui;
 
-import agh.ics.oop.IMapElement;
 import agh.ics.oop.SingleField;
 import agh.ics.oop.Vector2d;
 import javafx.geometry.HPos;
@@ -33,7 +32,7 @@ public class GuiElementBox {
     }
 
     public VBox getGridElement(){ return this.vBox; }
-    public GuiElementBox(IMapElement mapElement){
+    public GuiElementBox(SingleField mapElement){
         pointedObject = mapElement;
         updateObject();
     }

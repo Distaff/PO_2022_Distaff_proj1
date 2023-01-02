@@ -102,7 +102,6 @@ public record SimulationOptions(
             );
         }
 
-
         return new SimulationOptions(
             cursedGateway,
             toxicCorpses,

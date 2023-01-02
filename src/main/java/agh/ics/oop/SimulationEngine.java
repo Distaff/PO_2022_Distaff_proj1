@@ -6,6 +6,8 @@ public class SimulationEngine implements Runnable {
 
     final int FRAME_TIME = 250;
     private final IWorldMap worldMap;
+
+    private final MotherNature motherNature;
     private final Thread GUIThread;
     private final Runnable GUIApp;  //TODO: zmienic nazwe
     private int simulationID;
@@ -15,8 +17,15 @@ public class SimulationEngine implements Runnable {
     private boolean terminate = false;
 
     public SimulationEngine(SimulationOptions simulationOptions, int simulationID){
-        if(simulationOptions.cursedGateway()) worldMap = new CursedGatewayMap(simulationOptions);
-        else worldMap = new RoundEarthMap(simulationOptions);
+        if(simulationOptions.cursedGateway())
+            worldMap = new CursedGatewayMap(simulationOptions);
+        else
+            worldMap = new RoundEarthMap(simulationOptions);
+
+        if(simulationOptions.toxicCorpses())
+            this.motherNature = new MotherNature(worldMap, SingleField.compareByDeathCount);
+        else
+            this.motherNature = new MotherNature(worldMap, SingleField.compareByEquatorProximity);
 
         this.GUIApp = new App(this, this.worldMap);
         this.simulationID = simulationID;
@@ -29,10 +38,10 @@ public class SimulationEngine implements Runnable {
             step();
                 synchronized (this){
                     if(this.paused){
-                    try { this.wait(); }
-                    catch(InterruptedException e){ return; }
+                        try { this.wait(); }
+                        catch(InterruptedException e){ return; }
+                    continue;   //omit delay when unpausing or stepping frame-by-frame
                 }
-                continue;   //omit delay when unpausing or stepping frame-by-frame
             }
 
             try { Thread.sleep(FRAME_TIME); }

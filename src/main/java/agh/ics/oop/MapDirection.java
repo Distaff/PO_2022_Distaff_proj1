@@ -10,7 +10,7 @@ public enum MapDirection {
     WEST,
     NORTHWEST;
 
-    final String[] SYMBOLS = {"↑", "↗", "→","↘", "↓","↙", "←", "↖"};
+    final String[] SYMBOLS = {"↑", "↗", "→","↘", "↓","↙", "\u2190", "↖"}; //"←" does not work for whatever reason
     final String[] NAMES = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
     final Vector2d[] UNITVECTORS = {
             new Vector2d(0,1),
