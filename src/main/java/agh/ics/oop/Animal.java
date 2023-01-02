@@ -114,6 +114,9 @@ public class Animal implements Comparable {
     }
 
     public String toString() {
+        return "Pos: " + this.pos.toString() + ", Energy: " + this.energy + ", UUID: " + this.uuid;
+    }
+    public String stats() {
         return "UUID: \t\t" + this.uuid +
                 "\nPosition (x, y):\t" + this.pos.toString() +
                 "\nOrientation:\t" + this.orientation.shortRepresentation() +
@@ -128,5 +131,5 @@ public class Animal implements Comparable {
     }
     public String textureName(){ return "animal_" + this.orientation.shortRepresentation(); }
 
-    public String objectDescription(){ return "Animal: " + this.getPos().toString(); }
+    public String objectDescription(){ return "Animal(" + this.energy + ") energy"; }
 }

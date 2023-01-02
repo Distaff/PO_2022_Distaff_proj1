@@ -10,15 +10,13 @@ public class Genotype {
     private SimulationOptions simulationOptions;
     private List<Rotations> genes;
 
-
     public Rotations nextGene() {
         if(simulationOptions.crazyBehavior() && rand.nextInt(100) < 20)
             currentGene = rand.nextInt(simulationOptions.genotypeSize());
         else
             currentGene = (currentGene + 1) % simulationOptions.genotypeSize();
         return genes.get(currentGene);
-    };
-
+    }
 
     public Genotype(SimulationOptions simulationOptions){
         this.simulationOptions = simulationOptions;

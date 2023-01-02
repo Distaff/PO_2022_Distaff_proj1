@@ -45,6 +45,9 @@ public interface IWorldMap {
 
     SimulationOptions getSimulationOptions();
     int getWorldAge();
-    Collection<Animal> getAnimalsOnMap();
+    Collection<SingleField> getAllFields();
     Collection<SingleField> getOccupiedFields();
+    Collection<Animal> getAnimalsOnMap();
+
+    String stats();
 }

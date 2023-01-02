@@ -75,7 +75,14 @@ public abstract class AbstractWorldMap implements IWorldMap {
         occupiedFields.add(newPos);
     }
 
-
+    @Override
+    public Collection<SingleField> getAllFields(){
+        List<SingleField> fieldsList = new ArrayList<>();
+        for (SingleField[] column : this.mapFields) {
+            fieldsList.addAll(Arrays.stream(column).toList());
+        }
+        return fieldsList;
+    }
     @Override
     public Collection<SingleField> getOccupiedFields(){
         List<SingleField> fieldsList = new ArrayList<>();
@@ -98,5 +105,21 @@ public abstract class AbstractWorldMap implements IWorldMap {
     public String toString(){
         return this.drawEngine.draw(new Vector2d(0, 0),
             new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY()));
+    }
+
+    @Override
+    public String stats(){
+        int animalCount = getAnimalsOnMap().size();
+        int grassCount = 0; //TODO
+        int emptyFields = simulationOptions.mapSizeX() * simulationOptions.mapSizeY() - getOccupiedFields().size();
+        String mostPopularGenotype = "n/a"; //TODO
+        float avgEnergy = 0;    //TODO
+        float totalAvgEnergy = 0;   //TODO
+        return "Animals count:\t" + animalCount +
+                "Grass count:\t" + grassCount +
+                "Empty fields:\t" + emptyFields +
+                "Most popular genotype:\t" + mostPopularGenotype +
+                "Average energy:\t" + avgEnergy +
+                "Total average energy:\t" + totalAvgEnergy;
     }
 }

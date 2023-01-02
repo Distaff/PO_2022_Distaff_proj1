@@ -40,7 +40,7 @@ public class SingleField implements Comparable {
         Animal strongest = animalList.pollLast();
         Animal bride = animalList.pollLast();
 
-        if(strongest != null && grassPresent){
+        if(strongest != null && this.grassPresent){
             grassPresent = false;
             strongest.eatGrass();
         }

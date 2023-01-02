@@ -10,34 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class App implements Runnable{
+public class App implements Runnable {
     private GridPane grid;
-    private List<GuiElementBox> entityList = new ArrayList<>();
+    private List<GuiElementBox> fieldList = new ArrayList<>();
     private final SimulationEngine simulationEngine;
     private final IWorldMap worldMap;
-
     final int CELLSIZE = 40;
-
 
     public App(SimulationEngine simulationEngine, IWorldMap worldMap){
         this.simulationEngine = simulationEngine;
         this.worldMap = worldMap;
     }
 
-    public void start(Stage primaryStage) {
+    public void run() {
+        Stage thisStage = new Stage();
 
         createGuiMap();
         updateGuiMap();
 
         Scene scene = new Scene(grid, 600, 600);
-        primaryStage.setScene(scene);
+        thisStage.setScene(scene);
 
-        primaryStage.show();
+        thisStage.show();
     }
 
     private void createGuiMap() {
-        int rowCount = map.getUpperRight().y - map.getLowerLeft().y;
-        int columnCount = map.getUpperRight().x - map.getLowerLeft().x;
+        int rowCount = worldMap.getSimulationOptions().mapSizeX();
+        int columnCount = worldMap.getSimulationOptions().mapSizeY();
 
         grid = new GridPane();
 
@@ -48,8 +47,8 @@ public class App implements Runnable{
 
     private void updateGuiMap() {
         grid.getChildren().clear();
-        int rowCount = map.getUpperRight().y - map.getLowerLeft().y + 1;
-        int columnCount = map.getUpperRight().x - map.getLowerLeft().x + 1;
+        int rowCount = worldMap.getSimulationOptions().mapSizeX();
+        int columnCount = worldMap.getSimulationOptions().mapSizeY();
 
         for(GuiElementBox i : entityList){
             i.updateObject();

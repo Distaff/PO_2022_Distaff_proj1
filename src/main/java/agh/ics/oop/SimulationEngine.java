@@ -2,17 +2,16 @@ package agh.ics.oop;
 
 import agh.ics.oop.gui.App;
 
-public class SimulationEngine implements IEngine, Runnable {
+public class SimulationEngine implements Runnable {
 
     final int FRAME_TIME = 250;
-    final int IDLE_TIME = 50;
-
     private final IWorldMap worldMap;
-    private final Runnable GUIApp;
+    private final Thread GUIThread;
+    private final Runnable GUIApp;  //TODO: zmienic nazwe
     private int simulationID;
 
+    //TODO wait, notify do synchronizacji: paused=true do pauzy, notify + paused=false do obudzenia, samo notify to stepu
     private boolean paused = false;
-    private int nextFrames = 0;
     private boolean terminate = false;
 
     public SimulationEngine(SimulationOptions simulationOptions, int simulationID){
@@ -22,25 +21,22 @@ public class SimulationEngine implements IEngine, Runnable {
         this.GUIApp = new App(this, this.worldMap);
         this.simulationID = simulationID;
 
-        this.GUIApp.run();
+        GUIThread = new Thread(this.GUIApp);
     }
 
     public void run() {
         while(!this.terminate){
-            if(!this.paused){
-                step();
-                try { Thread.sleep(FRAME_TIME); }
-                catch(InterruptedException e){ return; }
-            }
-            else if (nextFrames > 0) {
-                nextFrames--;
-                step();
-            }
-            else {
-                try { Thread.sleep(IDLE_TIME); }
-                catch(InterruptedException e){ return; }
+            step();
+                synchronized (this){
+                    if(this.paused){
+                    try { this.wait(); }
+                    catch(InterruptedException e){ return; }
+                }
+                continue;   //omit delay when unpausing or stepping frame-by-frame
             }
 
+            try { Thread.sleep(FRAME_TIME); }
+            catch(InterruptedException e){ return; }
         }
     }
     private void step(){
@@ -60,6 +56,4 @@ public class SimulationEngine implements IEngine, Runnable {
         //TODO
     }
     public void togglePause() { this.paused = !this.paused; }
-    public void stepOneFrame() { this.nextFrames++; }
-    public void terminate() { this.terminate = true; }
 }
