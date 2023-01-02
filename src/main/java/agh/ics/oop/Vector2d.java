@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-public class Vector2d {
+public class Vector2d implements Comparable {
     public final int x;
     public final int y;
 
@@ -52,7 +52,24 @@ public class Vector2d {
         return new Vector2d(0 - this.x, 0 - this.y);
     }
 
-    @Override public int hashCode(){
+    @Override
+    public int hashCode(){
         return Integer.hashCode(this.x)*31 + Integer.hashCode(this.y)*11;
+    }
+
+    @Override
+    public int compareTo(Object otherObject) {
+        if(otherObject == null)
+            throw new NullPointerException("Null Pointer Exception during vectors comparison");
+
+        if(!(otherObject instanceof Vector2d))
+            throw new IllegalArgumentException("Non-vector object provided during vectors comparison");
+
+        Vector2d other = (Vector2d) otherObject;
+
+        if(this.x != other.x)
+            return this.x - other.x;
+        else
+            return this.y - other.y;
     }
 }

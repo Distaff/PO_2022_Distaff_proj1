@@ -14,17 +14,25 @@ public interface IWorldMap {
 
 
     /**
-     * Informs map about the fact, that entity is changing position.
-     * In some cases (teleportation in CursedGateway) this will result with energy loss.
+     * Informs map about the fact, that entity is changing position or is removed.
+     * In some cases (teleportation in CursedGateway) this will result in energy loss.
      * Example: Animal goes out of map bounds, and is teleported to another edge of the map.
      *
      * @param animal
      *            Which animal wants to change position
      * @param newPos
-     *            Position on which the animal wants to go
-     * @return Resulting position
+     *            Position on which the animal wants to go. Null if animal should be removed from map.
+     * @return Resulting position, or null if animal has been removed.
      */
-    public Vector2d stepsAt(Animal animal, Vector2d newPos);
+    Vector2d stepsAt(Animal animal, Vector2d newPos);
+
+    /**
+     * Informs map about the fact, that Animal has died.
+     *
+     * @param animal
+     *            Which animal is dying.
+     */
+    void animalDies(Animal animal);
 
     /**
      * Return true if given position on the map is occupied by any entity.

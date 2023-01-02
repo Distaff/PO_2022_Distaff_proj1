@@ -5,9 +5,19 @@ import java.util.*;
 public abstract class AbstractWorldMap implements IWorldMap {
     private MapVisualizer drawEngine = new MapVisualizer(this);
     private SingleField[][] mapFields;
-    private Set<Vector2d> occupiedFields = new HashSet<>();
+    private Set<Vector2d> occupiedFields = new HashSet<>(); //TODO: check every occupied field after eating phase
     protected SimulationOptions simulationOptions;
     private int worldAge;
+
+    AbstractWorldMap(SimulationOptions simulationOptions){
+        this.simulationOptions = simulationOptions;
+        mapFields = new SingleField[simulationOptions.mapSizeX()][simulationOptions.mapSizeY()];
+        for(int x = 0; x < simulationOptions.mapSizeX(); x++){
+            for(int y = 0; y < simulationOptions.mapSizeY(); y++){
+                mapFields[x][y] = new SingleField(this, new Vector2d(x, y));
+            }
+        }
+    }
 
     @Override
     public SimulationOptions getSimulationOptions() { return simulationOptions; }
@@ -18,6 +28,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     protected SingleField fieldAt(Vector2d pos) { return null; }
 
+    /*
     @Override
     public void growGrass() {
         //TODO
@@ -27,6 +38,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     public void makeFieldsPrivelaged() {
         //TODO
     }
+     */
 
     @Override
     public boolean place(Animal animal) {
@@ -45,6 +57,12 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public abstract Vector2d stepsAt(Animal animal, Vector2d newPos);
+
+    @Override
+    public void animalDies(Animal animal) {
+        fieldAt(animal.getPos()).popAnimal(animal);
+        fieldAt(animal.getPos()).grimReaperHasCame();
+    }
 
     protected void moveAnimal(Animal animal, Vector2d newPos){
         Vector2d oldPos = animal.getPos();

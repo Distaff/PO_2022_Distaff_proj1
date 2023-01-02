@@ -64,6 +64,7 @@ public class Animal implements Comparable {
     public void childrenIsBorn(){ offspringCounter++; };
 
     public void move(){
+        this.energy--;
         this.orientation.rotate(this.genotype.nextGene());
         pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
     }
@@ -76,10 +77,19 @@ public class Animal implements Comparable {
         this.energy += worldMap.getSimulationOptions().singleGrassEnergy();
     }
 
+    public void checkIfDying() {
+        if(this.energy <= 0) {
+            dateOfDeath = worldMap.getWorldAge();
+            worldMap.animalDies(this);
+        }
+    }
+
     @Override
     public int compareTo(Object otherObject) {
         if(otherObject == null)
             throw new NullPointerException("Null Pointer Exception during animals comparison");
+        if(!(otherObject instanceof Animal))
+            throw new IllegalArgumentException("Non-animal entity provided during animals comparison");
 
         Animal other = (Animal) otherObject;
 
@@ -99,7 +109,6 @@ public class Animal implements Comparable {
 
         Three hours of debugging.
         */
-
     }
 
     public String toString() {

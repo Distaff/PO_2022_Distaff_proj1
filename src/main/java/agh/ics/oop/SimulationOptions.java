@@ -1,8 +1,8 @@
 package agh.ics.oop;
 
 public record SimulationOptions(
-        boolean mapMode,            //0 for earth, 1 for cursed gateway
-        boolean grassPreferences,   //0 for living equators, 1 for toxic corpses
+        boolean cursedGateway,      //0 for earth, 1 for cursed gateway
+        boolean toxicCorpses,       //0 for living equators, 1 for toxic corpses
         boolean heavyMutations,     //0 for light correction, 1 for full randomness
         boolean crazyBehavior,      //0 for full predestination, 1 for craziness
 

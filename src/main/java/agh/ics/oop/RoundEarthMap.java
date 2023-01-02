@@ -1,8 +1,14 @@
 package agh.ics.oop;
 
 public class RoundEarthMap extends AbstractWorldMap {
+    public RoundEarthMap(SimulationOptions simulationOptions) { super(simulationOptions); }
+
     public Vector2d stepsAt(Animal animal, Vector2d newPos){
-        Vector2d oldPos = animal.getPos();
+        if(newPos == null){
+            fieldAt(animal.getPos()).popAnimal(animal);
+            return null;
+        }
+
         int maxX = simulationOptions.mapSizeX() - 1;
         int maxY = simulationOptions.mapSizeY() - 1;
 

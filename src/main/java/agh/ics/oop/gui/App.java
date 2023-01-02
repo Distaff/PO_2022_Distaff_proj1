@@ -1,7 +1,6 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
-import javafx.application.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -11,25 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class App extends Application{
-    private IEngine engine;
-    private IWorldMap map;
-    GridPane grid;
+public class App implements Runnable{
+    private GridPane grid;
     private List<GuiElementBox> entityList = new ArrayList<>();
+    private final SimulationEngine simulationEngine;
+    private final IWorldMap worldMap;
 
     final int CELLSIZE = 40;
-    @Override
-    public void init() throws Exception {
-        String[] args = getParameters().getRaw().toArray(new String[0]);
-        Rotations[] directions = null;  //TODO
-        map = null; //TODO
-        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
-        engine = new SimulationEngine(directions, map, positions);
 
-        super.init();
+
+    public App(SimulationEngine simulationEngine, IWorldMap worldMap){
+        this.simulationEngine = simulationEngine;
+        this.worldMap = worldMap;
     }
-    public void start(Stage primaryStage){
-        engine.run();
+
+    public void start(Stage primaryStage) {
 
         createGuiMap();
         updateGuiMap();

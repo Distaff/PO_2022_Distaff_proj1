@@ -1,6 +1,7 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.IMapElement;
+import agh.ics.oop.SingleField;
 import agh.ics.oop.Vector2d;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -18,7 +19,7 @@ import java.io.FileNotFoundException;
 public class GuiElementBox {
 
     private final int ICON_SIZE = 40;
-    private IMapElement pointedObject;
+    private SingleField pointedObject;
     private Label label;
     private Image img;
     private ImageView imgView;
