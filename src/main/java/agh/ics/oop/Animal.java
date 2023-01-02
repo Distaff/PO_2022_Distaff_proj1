@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Animal implements Comparable {
 
-    final private UUID uuid;
+    final public UUID uuid;
     private IWorldMap worldMap;
     private Genotype genotype;
     MapDirection orientation = MapDirection.NORTH;
@@ -14,8 +14,8 @@ public class Animal implements Comparable {
 
     private int offspringCounter;
     private int grassEaten;
-    private int dateOfBirth;
-    private int dateOfDeath;
+    private int dateOfBirth = -1;
+    private int dateOfDeath = -1;
 
     Random rand = new Random();
     public Animal(IWorldMap worldMap, Vector2d pos) {
@@ -63,27 +63,29 @@ public class Animal implements Comparable {
 
     public void childrenIsBorn(){ offspringCounter++; };
 
-    public void move(){
-        this.energy--;
-        this.orientation.rotate(this.genotype.nextGene());
-        pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
-    }
-
     public void teleported(){
         this.energy -= worldMap.getSimulationOptions().singleGrassEnergy();
     }
 
     public void eatGrass(){
+        grassEaten++;
         this.energy += worldMap.getSimulationOptions().singleGrassEnergy();
     }
 
-    public void checkIfDying() {
+    public void move(){
+        this.energy--;
+        this.orientation.rotate(this.genotype.nextGene());
+        pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
+    }
+    /**
+     * Checks if animal should die, and handles its death if necessary.
+     */
+    public void meetGrimReaper() {
         if(this.energy <= 0) {
             dateOfDeath = worldMap.getWorldAge();
             worldMap.animalDies(this);
         }
     }
-
     @Override
     public int compareTo(Object otherObject) {
         if(otherObject == null)
@@ -112,10 +114,18 @@ public class Animal implements Comparable {
     }
 
     public String toString() {
-        return "Position (x, y): " + this.pos.toString() +
-                ", Orientation: " + this.orientation.shortRepresentation();
+        return "UUID: \t\t" + this.uuid +
+                "\nPosition (x, y):\t" + this.pos.toString() +
+                "\nOrientation:\t" + this.orientation.shortRepresentation() +
+                "\nEnergy:\t\t" + this.energy +
+                "\nEaten grass count:\t" + this.grassEaten +
+                "\nChildren count:\t" + this.offspringCounter +
+                "\nGenotype:\t\t" + this.genotype +
+                "\nAlive since:\t" + this.dateOfBirth +
+                "(" + (this.worldMap.getWorldAge() - this.dateOfBirth) + "frames ago)" +
+                "\nDead since:\t" + (this.dateOfDeath == -1 ? "N/A" : (Integer.toString(this.dateOfDeath) +
+                "(" + (this.worldMap.getWorldAge() - this.dateOfDeath) + "frames ago)"));
     }
-
     public String textureName(){ return "animal_" + this.orientation.shortRepresentation(); }
 
     public String objectDescription(){ return "Animal: " + this.getPos().toString(); }

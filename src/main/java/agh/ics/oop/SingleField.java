@@ -17,6 +17,10 @@ public class SingleField implements Comparable {
         this.fieldPos = fieldPos;
     }
 
+    /**
+     * Subscriber function called by World Map to inform a field
+     * that it has been visited by Grim Reaper (animal died here)
+     */
     public void grimReaperHasCame(){ this.deathCount++; }
     public int getDeathCount() { return deathCount; }
 

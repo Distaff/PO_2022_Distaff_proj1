@@ -46,7 +46,7 @@ public class SimulationEngine implements IEngine, Runnable {
     private void step(){
         //1: Grim Reaper Phase
         for(Animal animal : worldMap.getAnimalsOnMap())
-            animal.checkIfDying();
+            animal.meetGrimReaper();
 
         //2: Movement phase
         for(Animal animal : worldMap.getAnimalsOnMap())
