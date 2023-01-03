@@ -20,19 +20,20 @@ public class Genotype {
 
     public Genotype(SimulationOptions simulationOptions){
         this.simulationOptions = simulationOptions;
-        genes = new ArrayList<>();
+        this.genes = new ArrayList<>();
 
         for(int i = 0; i < simulationOptions.genotypeSize(); i++){
-            genes.add(Rotations.values()[rand.nextInt(8)]);
+            this.genes.add(Rotations.values()[rand.nextInt(8)]);
         }
     }
 
     public Genotype(Genotype genotype1, Genotype genotype2, float energyRatio){
         this.simulationOptions = genotype1.simulationOptions;
+        this.genes = new ArrayList<>();
 
         int crossPoint = (int) (simulationOptions.genotypeSize() * energyRatio / (1 + energyRatio));    //if a+b=c and a/b=x:   a = cx/(1+x)
-        genes.addAll(genotype1.genes.subList(0, crossPoint));
-        genes.addAll(genotype2.genes.subList(crossPoint, simulationOptions.genotypeSize()));
+        this.genes.addAll(genotype1.genes.subList(0, crossPoint));
+        this.genes.addAll(genotype2.genes.subList(crossPoint, simulationOptions.genotypeSize()));
 
         if(simulationOptions.heavyMutations())
             heavilyMutate();
@@ -42,13 +43,13 @@ public class Genotype {
 
     private void mutate(){  //TODO: Sprawdzic poprawnosc
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
-        for (int mutatingGene : rand.ints(simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
+        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
             genes.set(mutatingGene, genes.get(mutatingGene).smallChange());
         }
     }
     private void heavilyMutate(){  //TODO: Sprawdzic poprawnosc
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
-        for (int mutatingGene : rand.ints(simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
+        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
             genes.set(mutatingGene, genes.get(mutatingGene).randomVal());
         }
     }

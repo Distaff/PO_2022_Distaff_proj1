@@ -21,7 +21,7 @@ public class CursedGatewayMap extends AbstractWorldMap {
         moveAnimal(animal, newPos);
 
         fieldAt(newPos).popAnimal(animal);
-        animal.teleported();    //apply energy penalty
+        animal.subtractEnergy(this.simulationOptions.breedingCost());    //apply energy penalty
         fieldAt(newPos).pushAnimal(animal);
 
         return newPos;

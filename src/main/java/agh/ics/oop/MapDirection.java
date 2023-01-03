@@ -10,7 +10,9 @@ public enum MapDirection {
     WEST,
     NORTHWEST;
 
-    final String[] SYMBOLS = {"↑", "↗", "→","↘", "↓","↙", "\u2190", "↖"}; //"←" does not work for whatever reason
+    //for whatever reason left arrow is "unmappable character for encoding windows-1252"
+    //not used
+    final String[] SYMBOLS = {"↑", "↗", "→","↘", "↓","↙", "\u2190", "↖"};
     final String[] NAMES = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
     final Vector2d[] UNITVECTORS = {
             new Vector2d(0,1),
@@ -23,7 +25,7 @@ public enum MapDirection {
             new Vector2d(-1,1),
     };
 
-    public String toString(){ return SYMBOLS[this.ordinal()]; }
+    public String toString(){ return NAMES[this.ordinal()]; }
     public String shortRepresentation(){ return NAMES[this.ordinal()]; }
 
     MapDirection next(){ return this.rotate(1); }

@@ -26,7 +26,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean isOccupied(Vector2d position) { return this.occupiedFields.contains(position); }
 
-    protected SingleField fieldAt(Vector2d pos) { return null; }
+    protected SingleField fieldAt(Vector2d pos) { return mapFields[pos.x][pos.y]; }
 
     @Override
     public List<SingleField> getAllFields(){
@@ -88,6 +88,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
         if(fieldAt(oldPos).isEmpty())
             occupiedFields.remove(oldPos);
 
+        animal.subtractEnergy(1);
         fieldAt(newPos).pushAnimal(animal);
         occupiedFields.add(newPos);
     }

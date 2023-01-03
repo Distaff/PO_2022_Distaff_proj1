@@ -26,8 +26,10 @@ public class Animal implements Comparable {
 
         this.worldMap = worldMap;
         this.pos = pos;
-
         this.uuid = UUID.randomUUID();
+        this.dateOfBirth = worldMap.getWorldAge();
+        this.energy = worldMap.getSimulationOptions().breedingCost() * 2;
+
         genotype = new Genotype(worldMap.getSimulationOptions());
     }
     public Animal(Animal parent1, Animal parent2) {
@@ -40,12 +42,6 @@ public class Animal implements Comparable {
         this.dateOfBirth = worldMap.getWorldAge();
         this.energy = worldMap.getSimulationOptions().breedingCost() * 2;
 
-        parent1.childrenIsBorn();
-        parent1.energy -= worldMap.getSimulationOptions().breedingCost();
-        parent2.childrenIsBorn();
-        parent2.energy -= worldMap.getSimulationOptions().breedingCost();
-
-
         if(this.rand.nextInt(0, 1) == 1){
             Animal tmp = parent1;
             parent1 = parent2;
@@ -55,16 +51,22 @@ public class Animal implements Comparable {
         float energyRatio = (float) parent1.energy / (float) parent2.energy;
         genotype = new Genotype(parent1.genotype, parent2.genotype, energyRatio);
 
-        this.orientation.rotate(Rotations.randomVal());
+        parent1.childrenIsBorn();
+        parent1.energy -= worldMap.getSimulationOptions().breedingCost();
+        parent2.childrenIsBorn();
+        parent2.energy -= worldMap.getSimulationOptions().breedingCost();
 
+        this.orientation.rotate(Rotations.randomVal());
     }
 
     public Vector2d getPos(){ return this.pos; }
 
+    public int getEnergy(){ return this.energy; }
+
     public void childrenIsBorn(){ offspringCounter++; };
 
-    public void teleported(){
-        this.energy -= worldMap.getSimulationOptions().singleGrassEnergy();
+    public void subtractEnergy(int val){
+        this.energy -= val;
     }
 
     public void eatGrass(){
@@ -73,8 +75,7 @@ public class Animal implements Comparable {
     }
 
     public void move(){
-        this.energy--;
-        this.orientation.rotate(this.genotype.nextGene());
+        this.orientation = this.orientation.rotate(this.genotype.nextGene());
         pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
     }
     /**
@@ -114,7 +115,9 @@ public class Animal implements Comparable {
     }
 
     public String toString() {
-        return "Pos: " + this.pos.toString() + ", Energy: " + this.energy + ", UUID: " + this.uuid;
+        return "Pos: " + this.pos.toString() + ", Energy: " + this.energy +
+                ", Geotype: " + this.genotype +
+                ", UUID: " + this.uuid;
     }
     public String stats() {
         return "UUID: \t\t" + this.uuid +
@@ -131,5 +134,5 @@ public class Animal implements Comparable {
     }
     public String textureName(){ return "animal_" + this.orientation.shortRepresentation(); }
 
-    public String objectDescription(){ return "Animal(" + this.energy + ") energy"; }
+    public String objectDescription(){ return "A(" + this.energy + " energy)"; }
 }

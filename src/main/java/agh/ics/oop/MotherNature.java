@@ -18,15 +18,15 @@ public class MotherNature {
 
     void plantGrass(int grassCount){
         int privilegedCounter = 0;
-        int unprivilededCounter = 0;
+        int unprivilegedCounter = 0;
         for(int i = 0; i < grassCount; i++){
             if(rand.nextInt(100) > 20) privilegedCounter++;
-            else unprivilededCounter++;
+            else unprivilegedCounter++;
         }
 
         this.fields.sort(cmp);
-        List<SingleField> privilegedFields = fields.subList(0, fields.size() / 5);
-        List<SingleField> unprivilegedFields = fields.subList(fields.size() / 5, fields.size());
+        List<SingleField> privilegedFields = new ArrayList<>(fields.subList(0, fields.size() / 5));
+        List<SingleField> unprivilegedFields = new ArrayList<>(fields.subList(fields.size() / 5, fields.size()));
 
         Collections.shuffle(privilegedFields);
         Collections.shuffle(unprivilegedFields);
@@ -41,7 +41,7 @@ public class MotherNature {
         }
 
         //If privileged fields are arleady full, planting on unprivilieged
-        for(int i = unprivilededCounter + privilegedCounter; i > 0; i--){
+        for(int i = unprivilegedCounter + privilegedCounter; i > 0; i--){
             if(unprivilegedFields.size() < 1)
                 throw new IllegalArgumentException("Planting more grass than there are fields is not allowed!");
 

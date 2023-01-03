@@ -1,0 +1,15 @@
+cursedGateway			false
+toxicCorpses 			false
+heavyMutations  		false
+crazyBehavior  			false
+mapSizeX				12
+mapSizeY				12
+beginningGrassCount		24
+dailyGrassCount			12
+singleGrassEnergy		25
+beginningAnimalCount	12
+breedingCost			5
+minBreedingEnergy 		10
+minMutationCount		2
+maxMutationCount		4
+genotypeSize			8

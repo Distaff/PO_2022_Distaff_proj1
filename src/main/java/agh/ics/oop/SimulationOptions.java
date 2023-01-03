@@ -23,7 +23,7 @@ public record SimulationOptions(
         int maxMutationCount,
         int genotypeSize
 ) {
-    static public SimulationOptions GetOptionsFromFile(File configFile){
+    static public SimulationOptions GetOptionsFromFile(String filepath){
         //Default values
         boolean cursedGateway = false;
         boolean toxicCorpses = false;
@@ -42,6 +42,7 @@ public record SimulationOptions(
         int genotypeSize = 8;
 
         try {
+            File configFile = new File(filepath);
             Scanner configReader = new Scanner(configFile);
             while (configReader.hasNextLine()) {
                 String key = configReader.next();
@@ -98,7 +99,7 @@ public record SimulationOptions(
                     null,
                     "Warning: file not found. Using default values.",
                     "Warning",
-                    JOptionPane.INFORMATION_MESSAGE
+                    JOptionPane.WARNING_MESSAGE
             );
         }
 

@@ -1,38 +1,41 @@
 package agh.ics.oop;
 
-import agh.ics.oop.gui.App;
+import agh.ics.oop.gui.SimulationUIApp;
+import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SimulationEngine implements Runnable {
 
-    final int FRAME_TIME = 250;
+    final int FRAME_TIME = 200;
     private final IWorldMap worldMap;
-
     private final MotherNature motherNature;
-    private final Thread GUIThread;
-    private final Runnable GUIApp;  //TODO: zmienic nazwe
+    private final SimulationUIApp UIhandle;
     private int simulationID;
-
-    //TODO wait, notify do synchronizacji: paused=true do pauzy, notify + paused=false do obudzenia, samo notify to stepu
     private boolean paused = false;
     private boolean terminate = false;
 
-    public SimulationEngine(SimulationOptions simulationOptions, int simulationID){
+    public IWorldMap getWorldMap() { return worldMap; }
+    public void togglePause() { this.paused = !this.paused; }
+
+    public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle){
         if(simulationOptions.cursedGateway())
-            worldMap = new CursedGatewayMap(simulationOptions);
+            this.worldMap = new CursedGatewayMap(simulationOptions);
         else
-            worldMap = new RoundEarthMap(simulationOptions);
+            this.worldMap = new RoundEarthMap(simulationOptions);
 
         if(simulationOptions.toxicCorpses())
             this.motherNature = new MotherNature(worldMap, SingleField.compareByDeathCount);
         else
             this.motherNature = new MotherNature(worldMap, SingleField.compareByEquatorProximity);
 
-        this.GUIApp = new App(this, this.worldMap);
-        this.simulationID = simulationID;
+        this.UIhandle = UIhandle;
 
-        GUIThread = new Thread(this.GUIApp);
+        placeAnimals();
     }
-
     public void run() {
         while(!this.terminate){
             step();
@@ -43,10 +46,19 @@ public class SimulationEngine implements Runnable {
                     continue;   //omit delay when unpausing or stepping frame-by-frame
                 }
             }
-
             try { Thread.sleep(FRAME_TIME); }
             catch(InterruptedException e){ return; }
         }
+    }
+
+    private void placeAnimals(){
+        List<Vector2d> availablePositions = new ArrayList<>();
+        for(SingleField field : worldMap.getAllFields())
+            availablePositions.add(field.fieldPos);
+        Collections.shuffle(availablePositions);
+
+        for(int i = worldMap.getSimulationOptions().beginningAnimalCount(); i > 0; i--)
+            worldMap.place(new Animal(worldMap, availablePositions.remove(availablePositions.size() - 1)));
     }
     private void step(){
         //1: Grim Reaper Phase
@@ -62,7 +74,9 @@ public class SimulationEngine implements Runnable {
             field.eatAndBreed();
 
         //5: Growth phase
-        //TODO
+        motherNature.plantGrass(worldMap.getSimulationOptions().dailyGrassCount());
+
+        //6: Refresh UI
+        Platform.runLater(UIhandle::updateGuiMap);
     }
-    public void togglePause() { this.paused = !this.paused; }
 }
