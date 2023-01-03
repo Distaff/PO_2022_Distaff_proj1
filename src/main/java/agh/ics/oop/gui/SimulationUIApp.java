@@ -1,6 +1,7 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -50,6 +51,7 @@ public class SimulationUIApp {
 
     public void updateGuiMap1() {
         System.out.println("ping");
+        grid.setPadding(new Insets(10, 10, 10, 10));
 
         this.grid.add(new Label("y/x"), 0, 0);
         this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));

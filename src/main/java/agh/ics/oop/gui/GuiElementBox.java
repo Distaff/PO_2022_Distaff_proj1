@@ -67,6 +67,6 @@ public class GuiElementBox {
     }
 
     private String rescourcePath(String filename){
-        return "src/main/rescources/" + filename + ".bmp";
+        return "src/main/rescources/" + filename + ".png";
     }
 }

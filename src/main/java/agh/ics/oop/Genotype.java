@@ -41,13 +41,13 @@ public class Genotype {
             mutate();
     }
 
-    private void mutate(){  //TODO: Sprawdzic poprawnosc
+    private void mutate(){
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
         for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
             genes.set(mutatingGene, genes.get(mutatingGene).smallChange());
         }
     }
-    private void heavilyMutate(){  //TODO: Sprawdzic poprawnosc
+    private void heavilyMutate(){
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
         for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
             genes.set(mutatingGene, genes.get(mutatingGene).randomVal());

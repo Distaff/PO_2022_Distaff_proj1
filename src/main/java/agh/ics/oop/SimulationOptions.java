@@ -23,7 +23,14 @@ public record SimulationOptions(
         int maxMutationCount,
         int genotypeSize
 ) {
-    static public SimulationOptions GetOptionsFromFile(String filepath){
+
+    static public SimulationOptions GetOptionsFromFile(String filepath) {
+        File configFile = new File(filepath);
+        return GetOptionsFromFile(configFile);
+    }
+
+
+    static public SimulationOptions GetOptionsFromFile(File file){
         //Default values
         boolean cursedGateway = false;
         boolean toxicCorpses = false;
@@ -42,8 +49,7 @@ public record SimulationOptions(
         int genotypeSize = 8;
 
         try {
-            File configFile = new File(filepath);
-            Scanner configReader = new Scanner(configFile);
+            Scanner configReader = new Scanner(file);
             while (configReader.hasNextLine()) {
                 String key = configReader.next();
                 switch (key) {

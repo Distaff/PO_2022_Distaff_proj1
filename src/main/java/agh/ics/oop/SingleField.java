@@ -71,6 +71,7 @@ public class SingleField {
         int equator = o1.worldMap.getSimulationOptions().mapSizeY() / 2;
         int distance1 = Math.abs(o1.fieldPos.y - equator);
         int distance2 = Math.abs(o2.fieldPos.y - equator);
+        //TODO: Naprawic
         //if(o1.grassPresent != o2.grassPresent)
         //    return o1.grassPresent ? 1 : -1;    //When grass is present field should not be privileged
         if(distance1 != distance2)
