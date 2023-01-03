@@ -1,10 +1,10 @@
-cursedGateway			true
+cursedGateway			false
 toxicCorpses 			false
 heavyMutations  		true
 crazyBehavior  			true
 mapSizeX				12
 mapSizeY				12
-beginningGrassCount		12
+beginningGrassCount		2
 dailyGrassCount			2
 singleGrassEnergy		25
 beginningAnimalCount	12

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -99,7 +100,7 @@ public class SimulationUIApp {
         });
 
         Button nextFrameButton = new Button("Single Frame");
-        this.grid.add(nextFrameButton, this.mapSizeX + 3, 2, 3, 1);
+        this.grid.add(nextFrameButton, this.mapSizeX + 2, 2, 3, 1);
         nextFrameButton.setOnAction((event) -> {
             synchronized (this.simulationEngine){
                 this.simulationEngine.setPause(true);
@@ -119,11 +120,13 @@ public class SimulationUIApp {
         this.grid.setGridLinesVisible(false);
     }
     public void updateGuiMap() {
+        /*  //Something is wrong here - grass that no longer exists sometimes stays on screen
+
+
         //Refreshing fields that were used in last frame
         for(GuiElementBox box : this.usedBoxes){
-            box.updateObject();
-
             this.grid.getChildren().remove(box.getGridElement());
+            box.updateObject();
             this.grid.add(box.getGridElement(), box.getXCoordinate() + 1, this.mapSizeY - box.getYCoordinate());
         }
 
@@ -132,13 +135,24 @@ public class SimulationUIApp {
         //Refreshing fields used currently
         for(SingleField field : worldMap.getOccupiedFields()){
             GuiElementBox box = this.elementBoxes[field.fieldPos.x][field.fieldPos.y];
+            this.grid.getChildren().remove(box.getGridElement());
+
             box.updateObject();
 
-            this.grid.getChildren().remove(box.getGridElement());
             this.grid.add(box.getGridElement(), box.getXCoordinate() + 1, this.mapSizeY - box.getYCoordinate());
             this.usedBoxes.add(box);
         }
 
+        */
+        for(GuiElementBox boxColumn[] : elementBoxes){
+            for(GuiElementBox box : boxColumn) {
+                this.grid.getChildren().remove(box.getGridElement());
+                box.updateObject();
+                this.grid.add(box.getGridElement(), box.getXCoordinate() + 1, this.mapSizeY - box.getYCoordinate());
+            }
+        }
+        // if frame in SimulationEngina has changed until now, statistics may not be accurate (they may refer to another frame)
         this.statField.setText("Stats:\n" + worldMap.stats());
+
     }
 }

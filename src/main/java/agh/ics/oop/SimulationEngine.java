@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class SimulationEngine implements Runnable {
 
-    final int FRAME_TIME = 100;
+    final int FRAME_TIME = 1000;
     private final IWorldMap worldMap;
     private final MotherNature motherNature;
     private final SimulationUIApp UIhandle;
