@@ -26,36 +26,34 @@ public class SingleField {
      * that it has been visited by Grim Reaper (animal died here)
      */
     public void grimReaperHasCame(){ this.deathCount++; }
-    public int getDeathCount() { return deathCount; }
+    public int getDeathCount() { return this.deathCount; }
 
-    public List<Animal> getAnimalsOnField(){ return animalList.stream().toList(); }
+    public List<Animal> getAnimalsOnField(){ return this.animalList.stream().toList(); }
 
     public void pushAnimal(Animal animal){ this.animalList.add(animal); }
 
     public void popAnimal(Animal animal){ this.animalList.remove(animal); }
 
-    public void growGrass(){ grassPresent = true; }
+    public void growGrass(){ this.grassPresent = true; }
 
-    public boolean grassPresent(){ return grassPresent; }
+    public boolean grassPresent(){ return this.grassPresent; }
 
-    public boolean isEmpty() { return animalList.isEmpty() || grassPresent; }
+    public boolean isEmpty() { return this.animalList.isEmpty() || this.grassPresent; }
 
     public void eatAndBreed(){
-        //TreeSet<Animal> animalList2 = (TreeSet<Animal>) animalList.clone();
-        Animal strongest = animalList.pollLast();
-        Animal bride = animalList.pollLast();
+        Animal strongest = this.animalList.pollLast();
+        Animal bride = this.animalList.pollLast();
 
         if(strongest != null && this.grassPresent){
-            grassPresent = false;
+            this.grassPresent = false;
             strongest.eatGrass();
         }
         if(strongest != null && bride != null && bride.getEnergy() > worldMap.getSimulationOptions().minBreedingEnergy()){
-            animalList.add(new Animal(strongest, bride));
-            //System.out.println(animalList2);
+            this.animalList.add(new Animal(strongest, bride));
         }
 
-        if(strongest != null) animalList.add(strongest);
-        if(bride != null) animalList.add(bride);
+        if(strongest != null) this.animalList.add(strongest);
+        if(bride != null) this.animalList.add(bride);
     }
 
     static Comparator<SingleField> compareByDeathCount = (o1, o2) -> {
@@ -82,8 +80,8 @@ public class SingleField {
     };
 
     public String objectDescription(){
-        if (animalList.size() > 1) return animalList.last().objectDescription() + "\n+ " + (animalList.size() - 1) + "other";
-        else if (animalList.size() == 1) return animalList.last().objectDescription();
+        if (this.animalList.size() > 1) return animalList.last().objectDescription() + "\n+ " + (animalList.size() - 1) + "other";
+        else if (this.animalList.size() == 1) return animalList.last().objectDescription();
         else if (this.grassPresent) return "";
         else return "";
     }
@@ -91,7 +89,7 @@ public class SingleField {
     public String textureName(){
         return switch (this.animalList.size()){
             case 0 -> "empty";
-            case 1 -> animalList.first().textureName();
+            case 1 -> this.animalList.first().textureName();
             case 2 -> "animals_2";
             case 3 -> "animals_3";
             case 4 -> "animals_4";
@@ -100,5 +98,5 @@ public class SingleField {
         };
     }
 
-    public String backgroundTextureName(){ return grassPresent ? "grass" : "background"; }
+    public String backgroundTextureName(){ return this.grassPresent ? "grass" : "background"; }
 }

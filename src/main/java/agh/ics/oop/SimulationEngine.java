@@ -14,7 +14,7 @@ public class SimulationEngine implements Runnable {
     private final IWorldMap worldMap;
     private final MotherNature motherNature;
     private final SimulationUIApp UIhandle;
-    private int simulationID;
+    private final int simulationID;
     private boolean paused = false;
     private boolean terminate = false;
 
@@ -23,7 +23,9 @@ public class SimulationEngine implements Runnable {
 
     public boolean isPaused() { return this.paused; }
 
-    public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle){
+    public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle, int simulationID){
+        this.simulationID = simulationID;
+
         if(simulationOptions.cursedGateway())
             this.worldMap = new CursedGatewayMap(simulationOptions);
         else

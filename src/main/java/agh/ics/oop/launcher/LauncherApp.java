@@ -33,18 +33,15 @@ public class LauncherApp extends Application {
     public void start(Stage stage) {
         this.launcherStage = stage;
 
-        //Creating a GridPane container
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(30, 30, 30, 30));
         grid.setHgap(10);
 
-
         final TextField path = new TextField();
         path.setPromptText("Enter path to simulation settings file");
         path.setText("options.txt");
         path.setPrefColumnCount(30);
-        //path.getText();
         grid.add(path, 0, 0);
 
         Button browse = new Button("Browse");
@@ -67,7 +64,6 @@ public class LauncherApp extends Application {
     }
 
     private void spawnSimulation(String filepath){
-
         SimulationOptions simulationOptions = SimulationOptions.GetOptionsFromFile(filepath);
 
         SimulationUIApp simApp = new SimulationUIApp(simulationOptions, nextID++);

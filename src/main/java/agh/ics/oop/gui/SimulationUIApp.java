@@ -34,7 +34,7 @@ public class SimulationUIApp {
     public SimulationUIApp(SimulationOptions simulationOptions, int simulationID){
         this.stage = new Stage();
 
-        this.simulationEngine = new SimulationEngine(simulationOptions, this);
+        this.simulationEngine = new SimulationEngine(simulationOptions, this, simulationID);
         this.worldMap = this.simulationEngine.getWorldMap();
 
         this.mapSizeX = simulationOptions.mapSizeX();
@@ -90,7 +90,7 @@ public class SimulationUIApp {
         }
 
         Button pauseButton = new Button("Pause");
-        this.grid.add(pauseButton, this.mapSizeX + 2, 1);
+        this.grid.add(pauseButton, this.mapSizeX + 2, 1, 3, 1);
         pauseButton.setOnAction((event) -> {
             synchronized (this.simulationEngine){
                 this.simulationEngine.setPause(!this.simulationEngine.isPaused());
@@ -99,7 +99,7 @@ public class SimulationUIApp {
         });
 
         Button nextFrameButton = new Button("Single Frame");
-        this.grid.add(nextFrameButton, this.mapSizeX + 3, 1);
+        this.grid.add(nextFrameButton, this.mapSizeX + 3, 2, 3, 1);
         nextFrameButton.setOnAction((event) -> {
             synchronized (this.simulationEngine){
                 this.simulationEngine.setPause(true);
@@ -108,7 +108,7 @@ public class SimulationUIApp {
         });
 
         this.statField = new Label("Stats:");
-        this.grid.add(this.statField, this.mapSizeX + 2, 2, 2, 3);
+        this.grid.add(this.statField, this.mapSizeX + 2, 3, 2, 3);
         this.statField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         GridPane.setFillHeight(this.statField, true);
 

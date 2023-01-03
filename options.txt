@@ -4,8 +4,8 @@ heavyMutations  		true
 crazyBehavior  			true
 mapSizeX				12
 mapSizeY				12
-beginningGrassCount		24
-dailyGrassCount			4
+beginningGrassCount		12
+dailyGrassCount			2
 singleGrassEnergy		25
 beginningAnimalCount	12
 breedingCost			5
