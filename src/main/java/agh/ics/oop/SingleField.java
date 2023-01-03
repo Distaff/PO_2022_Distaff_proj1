@@ -85,7 +85,7 @@ public class SingleField {
     };
 
     public String objectDescription(){
-        if (animalList.size() > 1) return animalList.last().objectDescription() + "and " + animalList.size() + "other";
+        if (animalList.size() > 1) return animalList.last().objectDescription() + "\n+ " + (animalList.size() - 1) + "other";
         else if (animalList.size() == 1) return animalList.last().objectDescription();
         else if (this.grassPresent) return "";
         else return "";

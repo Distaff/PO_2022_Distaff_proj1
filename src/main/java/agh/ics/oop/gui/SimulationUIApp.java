@@ -49,8 +49,7 @@ public class SimulationUIApp {
         this.engineThread.start();
     }
 
-    public void updateGuiMap1() {
-        System.out.println("ping");
+    public void createMap() {
         grid.setPadding(new Insets(CELLSIZE, CELLSIZE, CELLSIZE, CELLSIZE));
 
         this.grid.add(new Label("y/x"), 0, 0);
@@ -65,7 +64,6 @@ public class SimulationUIApp {
             this.grid.add(new Label(Integer.toString(y)), 0, y);
             this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));
         }
-
 
         this.grid.setGridLinesVisible(true);
     }
@@ -87,24 +85,5 @@ public class SimulationUIApp {
             //this.grid.add(i.backgroundImgView, field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y + 1);
             //this.grid.add(i.imgView, field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y + 1);
         }
-
-        /*
-        this.grid.add(new Label("y/x"), 0, 0);
-        this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));
-        this.grid.getColumnConstraints().add(new ColumnConstraints(CELLSIZE));
-*/
-        /*
-        for (int x = 1; x < this.mapSizeX + 1; x++) {
-            this.grid.add(new Label(Integer.toString(x)), x, 0);
-            this.grid.getColumnConstraints().add(new ColumnConstraints(CELLSIZE));
-        }
-        for (int y = 1; y < this.mapSizeY + 1; y++) {
-            this.grid.add(new Label(Integer.toString(y)), 0, y);
-            this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));
-        }
-         */
-
-
-        this.grid.setGridLinesVisible(true);
     }
 }
