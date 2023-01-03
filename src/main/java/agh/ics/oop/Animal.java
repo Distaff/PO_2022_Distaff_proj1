@@ -119,6 +119,8 @@ public class Animal implements Comparable {
                 ", Geotype: " + this.genotype +
                 ", UUID: " + this.uuid;
     }
+
+    public String genotypeDescription() { return genotype.description(); }
     public String stats() {
         return "UUID: \t\t" + this.uuid +
                 "\nPosition (x, y):\t" + this.pos.toString() +

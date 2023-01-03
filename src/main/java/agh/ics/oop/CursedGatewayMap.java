@@ -11,17 +11,17 @@ public class CursedGatewayMap extends AbstractWorldMap {
             return null;
         }
 
-        if( !newPos.precedes(new Vector2d(this.simulationOptions.mapSizeX(), this.simulationOptions.mapSizeY())) ||
+        if( !newPos.precedes(new Vector2d(this.simulationOptions.mapSizeX() - 1, this.simulationOptions.mapSizeY() - 1)) ||
             !newPos.follows(new Vector2d(0, 0)))
         {
             Random rand = new Random();
             newPos = new Vector2d(rand.nextInt(simulationOptions.mapSizeX()), rand.nextInt(simulationOptions.mapSizeY()));
+            animal.subtractEnergy(this.simulationOptions.breedingCost());    //apply energy penalty
         }
 
         moveAnimal(animal, newPos);
 
         fieldAt(newPos).popAnimal(animal);
-        animal.subtractEnergy(this.simulationOptions.breedingCost());    //apply energy penalty
         fieldAt(newPos).pushAnimal(animal);
 
         return newPos;

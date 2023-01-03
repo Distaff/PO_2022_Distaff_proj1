@@ -1,11 +1,14 @@
 package agh.ics.oop;
 
+import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements IWorldMap {
     private MapVisualizer drawEngine = new MapVisualizer(this);
     private SingleField[][] mapFields;
-    private Set<Vector2d> occupiedFields = new HashSet<>(); //TODO: check every occupied field after eating phase
+    private Set<Vector2d> occupiedFields = new HashSet<>();
     protected SimulationOptions simulationOptions;
     private int worldAge;
 
@@ -101,17 +104,36 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public String stats(){
-        int animalCount = getAnimalsOnMap().size();
-        int grassCount = 0; //TODO
+        List<Animal> animalsOnMap = getAnimalsOnMap();
+
+        int animalCount = animalsOnMap.size();
+
+        int grassCount = (int) occupiedFields.stream()
+                .map(this::fieldAt)
+                .map(SingleField::grassPresent)
+                .filter(b -> b == true).count();
+
         int emptyFields = simulationOptions.mapSizeX() * simulationOptions.mapSizeY() - getOccupiedFields().size();
-        String mostPopularGenotype = "n/a"; //TODO
-        float avgEnergy = 0;    //TODO
-        float totalAvgEnergy = 0;   //TODO
+
+        String mostPopularGenotype = animalsOnMap.stream()
+                .map(Animal::genotypeDescription)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow(IllegalStateException::new)
+                .getKey();
+
+        float avgEnergy = (float) animalsOnMap.stream()
+                .map(Animal::getEnergy)
+                .mapToDouble(a -> a)
+                .average()
+                .orElseThrow(IllegalStateException::new);
+
         return "Animals count:\t" + animalCount +
-                "Grass count:\t" + grassCount +
-                "Empty fields:\t" + emptyFields +
-                "Most popular genotype:\t" + mostPopularGenotype +
-                "Average energy:\t" + avgEnergy +
-                "Total average energy:\t" + totalAvgEnergy;
+                "\nGrass count:\t" + grassCount +
+                "\nEmpty fields:\t" + emptyFields +
+                "\nMost popular genotype:\t" + mostPopularGenotype +
+                "\nAverage energy:\t" + avgEnergy;
     }
 }

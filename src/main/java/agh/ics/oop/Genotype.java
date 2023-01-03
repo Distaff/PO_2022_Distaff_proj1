@@ -58,4 +58,6 @@ public class Genotype {
     public String toString(){
         return genes.toString() + "; current active index: " + currentGene;
     }
+
+    public String description(){ return genes.toString(); }
 }

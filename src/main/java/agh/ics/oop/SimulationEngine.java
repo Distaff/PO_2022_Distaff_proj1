@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class SimulationEngine implements Runnable {
 
-    final int FRAME_TIME = 1000;
+    final int FRAME_TIME = 100;
     private final IWorldMap worldMap;
     private final MotherNature motherNature;
     private final SimulationUIApp UIhandle;
@@ -19,7 +19,9 @@ public class SimulationEngine implements Runnable {
     private boolean terminate = false;
 
     public IWorldMap getWorldMap() { return worldMap; }
-    public void togglePause() { this.paused = !this.paused; }
+    public void setPause(boolean val) { this.paused = val; }
+
+    public boolean isPaused() { return this.paused; }
 
     public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle){
         if(simulationOptions.cursedGateway())

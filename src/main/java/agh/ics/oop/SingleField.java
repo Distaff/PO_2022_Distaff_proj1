@@ -34,7 +34,9 @@ public class SingleField {
 
     public void popAnimal(Animal animal){ this.animalList.remove(animal); }
 
-    public void growGrass(){ grassPresent = true; };
+    public void growGrass(){ grassPresent = true; }
+
+    public boolean grassPresent(){ return grassPresent; }
 
     public boolean isEmpty() { return animalList.isEmpty() || grassPresent; }
 
@@ -57,9 +59,7 @@ public class SingleField {
     }
 
     static Comparator<SingleField> compareByDeathCount = (o1, o2) -> {
-        if(o1.grassPresent != o2.grassPresent)
-            return o1.grassPresent ? 1 : -1;    //When grass is present field should not be privileged
-        else if(o1.deathCount != o2.deathCount)
+        if(o1.deathCount != o2.deathCount)
             return o1.deathCount - o2.deathCount;
         else if (o1.grassPriority != o2.grassPriority)
             return o1.grassPriority - o2.grassPriority;
@@ -71,9 +71,6 @@ public class SingleField {
         int equator = o1.worldMap.getSimulationOptions().mapSizeY() / 2;
         int distance1 = Math.abs(o1.fieldPos.y - equator);
         int distance2 = Math.abs(o2.fieldPos.y - equator);
-        //TODO: Naprawic
-        //if(o1.grassPresent != o2.grassPresent)
-        //    return o1.grassPresent ? 1 : -1;    //When grass is present field should not be privileged
         if(distance1 != distance2)
             return distance1 - distance2;
         else if(o1.fieldPos.y != o2.fieldPos.y)

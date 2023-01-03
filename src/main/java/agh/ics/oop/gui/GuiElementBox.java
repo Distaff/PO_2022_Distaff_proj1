@@ -33,6 +33,10 @@ public class GuiElementBox {
 
 
     public VBox getGridElement(){ return this.vBox; }
+
+    public int getXCoordinate(){ return this.pointedField.fieldPos.x; }
+    public int getYCoordinate(){ return this.pointedField.fieldPos.y; }
+
     public GuiElementBox(SingleField mapElement){
         pointedField = mapElement;
         updateObject();
