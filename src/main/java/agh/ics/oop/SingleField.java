@@ -87,8 +87,8 @@ public class SingleField {
     public String objectDescription(){
         if (animalList.size() > 1) return animalList.last().objectDescription() + "and " + animalList.size() + "other";
         else if (animalList.size() == 1) return animalList.last().objectDescription();
-        else if (this.grassPresent) return "*";
-        else return "__";
+        else if (this.grassPresent) return "";
+        else return "";
     }
 
     public String textureName(){
@@ -103,7 +103,5 @@ public class SingleField {
         };
     }
 
-    public String backgroundTextureName(){
-        return "background";
-    }
+    public String backgroundTextureName(){ return grassPresent ? "grass" : "background"; }
 }

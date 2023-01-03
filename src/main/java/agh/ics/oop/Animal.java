@@ -134,5 +134,5 @@ public class Animal implements Comparable {
     }
     public String textureName(){ return "animal_" + this.orientation.shortRepresentation(); }
 
-    public String objectDescription(){ return "A(" + this.energy + " energy)"; }
+    public String objectDescription(){ return "A(" + this.energy + ")"; }
 }

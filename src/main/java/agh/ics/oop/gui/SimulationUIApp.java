@@ -22,7 +22,7 @@ public class SimulationUIApp {
     private final int mapSizeX;
     private final int mapSizeY;
     private final int simulationID;
-    final int CELLSIZE = 40;
+    final int CELLSIZE = 60;
 
     public SimulationUIApp(SimulationOptions simulationOptions, int simulationID){
         this.stage = new Stage();
@@ -41,7 +41,7 @@ public class SimulationUIApp {
             this.mapEntities[field.fieldPos.x][field.fieldPos.y] = new GuiElementBox(field);
         }
 
-        Scene scene = new Scene(this.grid, 600, 600);
+        Scene scene = new Scene(this.grid, CELLSIZE*(mapSizeX+3), CELLSIZE*(mapSizeY+3));
         this.stage.setScene(scene);
         this.stage.show();
 
@@ -51,7 +51,7 @@ public class SimulationUIApp {
 
     public void updateGuiMap1() {
         System.out.println("ping");
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setPadding(new Insets(CELLSIZE, CELLSIZE, CELLSIZE, CELLSIZE));
 
         this.grid.add(new Label("y/x"), 0, 0);
         this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));
@@ -81,7 +81,7 @@ public class SimulationUIApp {
         for(SingleField field : worldMap.getAllFields()){
             GuiElementBox i = this.mapEntities[field.fieldPos.x][field.fieldPos.y];
             i.updateObject();
-            this.grid.add(i.getGridElement(), field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y - 1);
+            this.grid.add(i.getGridElement(), field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y);
             //GridPane.setFillWidth(label, true);
             //this.grid.add(i.label, field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y + 1);
             //this.grid.add(i.backgroundImgView, field.fieldPos.x + 1, this.mapSizeY - field.fieldPos.y + 1);
