@@ -3,12 +3,12 @@ package agh.ics.oop;
 import java.util.Random;
 import java.util.UUID;
 
-public class Animal implements Comparable {
+public class Animal implements Comparable { // Comparable jest interfejsem parametryzowanym - piszemy Comparable<Animal>
 
     final public UUID uuid;
     private IWorldMap worldMap;
     private Genotype genotype;
-    MapDirection orientation = MapDirection.NORTH;
+    MapDirection orientation = MapDirection.NORTH;  // modyfikator dostępu
     private Vector2d pos;
     private int energy;
 
@@ -17,11 +17,12 @@ public class Animal implements Comparable {
     private int dateOfBirth = -1;
     private int dateOfDeath = -1;
 
-    Random rand = new Random();
+    private static Random rand = new Random();
+
     public Animal(IWorldMap worldMap, Vector2d pos) {
-        if(worldMap == null)
-            throw new NullPointerException("Null Pointer Exception during animal creation (worldMap is null)");
-        if(pos == null)
+        if (worldMap == null)
+            throw new NullPointerException("worldMap cannot be null)"); // nie musi Pan umieszczać typu wyjątku w wiadomości
+        if (pos == null)
             throw new NullPointerException("Null Pointer Exception during animal creation (pos is null)");
 
         this.worldMap = worldMap;
@@ -32,8 +33,9 @@ public class Animal implements Comparable {
 
         genotype = new Genotype(worldMap.getSimulationOptions());
     }
+
     public Animal(Animal parent1, Animal parent2) {
-        if(parent1 == null || parent2 == null)
+        if (parent1 == null || parent2 == null)
             throw new NullPointerException("Null Pointer Exception during animal creation (parent is null)");
 
         this.worldMap = parent1.worldMap;
@@ -42,7 +44,7 @@ public class Animal implements Comparable {
         this.dateOfBirth = worldMap.getWorldAge();
         this.energy = worldMap.getSimulationOptions().breedingCost() * 2;
 
-        if(this.rand.nextInt(0, 1) == 1){
+        if (this.rand.nextInt(0, 1) == 1) {
             Animal tmp = parent1;
             parent1 = parent2;
             parent2 = tmp;
@@ -59,44 +61,54 @@ public class Animal implements Comparable {
         this.orientation.rotate(Rotations.randomVal());
     }
 
-    public Vector2d getPos(){ return this.pos; }
+    public Vector2d getPos() {
+        return this.pos;
+    }
 
-    public int getEnergy(){ return this.energy; }
+    public int getEnergy() {
+        return this.energy;
+    }
 
-    public void childrenIsBorn(){ offspringCounter++; };
+    public void childrenIsBorn() {
+        offspringCounter++;
+    }
 
-    public void subtractEnergy(int val){
+    ;
+
+    public void subtractEnergy(int val) {
         this.energy -= val;
     }
 
-    public void eatGrass(){
+    public void eatGrass() {
         grassEaten++;
         this.energy += worldMap.getSimulationOptions().singleGrassEnergy();
     }
 
-    public void move(){
+    public void move() {
         this.orientation = this.orientation.rotate(this.genotype.nextGene());
         pos = this.worldMap.stepsAt(this, this.pos.add(this.orientation.toUnitVector()));
     }
+
     /**
      * Checks if animal should die, and handles its death if necessary.
      */
-    public void meetGrimReaper() {
-        if(this.energy <= 0) {
+    public void meetGrimReaper() { // dowcipne nazwy metod są dobre tylko przez pierwsze 2 dni
+        if (this.energy <= 0) {
             dateOfDeath = worldMap.getWorldAge();
             worldMap.animalDies(this);
         }
     }
+
     @Override
     public int compareTo(Object otherObject) {
-        if(otherObject == null)
+        if (otherObject == null) // nadmiarowe sprawdzenie - jak dostaliśmy null to i tak poleci NullPointerException podczas operacji
             throw new NullPointerException("Null Pointer Exception during animals comparison");
-        if(!(otherObject instanceof Animal))
+        if (!(otherObject instanceof Animal))
             throw new IllegalArgumentException("Non-animal entity provided during animals comparison");
 
         Animal other = (Animal) otherObject;
 
-        if(this.energy != other.energy)
+        if (this.energy != other.energy)
             return this.energy - other.energy;
         else if (this.dateOfBirth != other.dateOfBirth)
             return other.dateOfBirth - this.dateOfBirth;
@@ -120,7 +132,10 @@ public class Animal implements Comparable {
                 ", UUID: " + this.uuid;
     }
 
-    public String genotypeDescription() { return genotype.description(); }
+    public String genotypeDescription() {
+        return genotype.description();
+    }
+
     public String stats() {
         return "UUID: \t\t" + this.uuid +
                 "\nPosition (x, y):\t" + this.pos.toString() +
@@ -134,7 +149,12 @@ public class Animal implements Comparable {
                 "\nDead since:\t" + (this.dateOfDeath == -1 ? "N/A" : (Integer.toString(this.dateOfDeath) +
                 "(" + (this.worldMap.getWorldAge() - this.dateOfDeath) + "frames ago)"));
     }
-    public String textureName(){ return "animal_" + this.orientation.shortRepresentation(); }
 
-    public String objectDescription(){ return "A(" + this.energy + ")"; }
+    public String textureName() {
+        return "animal_" + this.orientation.shortRepresentation(); // Linux rozróżnia wielkość literz
+    }
+
+    public String objectDescription() {
+        return "A(" + this.energy + ")";
+    }
 }

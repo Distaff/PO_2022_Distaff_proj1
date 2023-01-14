@@ -18,20 +18,27 @@ public class SimulationEngine implements Runnable {
     private boolean paused = false;
     private boolean terminate = false;
 
-    public IWorldMap getWorldMap() { return worldMap; }
-    public void setPause(boolean val) { this.paused = val; }
+    public IWorldMap getWorldMap() {
+        return worldMap;
+    }
 
-    public boolean isPaused() { return this.paused; }
+    public void setPause(boolean val) {
+        this.paused = val;
+    }
 
-    public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle, int simulationID){
+    public boolean isPaused() {
+        return this.paused;
+    }
+
+    public SimulationEngine(SimulationOptions simulationOptions, SimulationUIApp UIhandle, int simulationID) {
         this.simulationID = simulationID;
 
-        if(simulationOptions.cursedGateway())
+        if (simulationOptions.cursedGateway())
             this.worldMap = new CursedGatewayMap(simulationOptions);
         else
             this.worldMap = new RoundEarthMap(simulationOptions);
 
-        if(simulationOptions.toxicCorpses())
+        if (simulationOptions.toxicCorpses())
             this.motherNature = new MotherNature(worldMap, SingleField.compareByDeathCount);
         else
             this.motherNature = new MotherNature(worldMap, SingleField.compareByEquatorProximity);
@@ -40,41 +47,49 @@ public class SimulationEngine implements Runnable {
 
         placeAnimals();
     }
+
     public void run() {
-        while(!this.terminate){
+        while (!this.terminate) {
             step();
-                synchronized (this){
-                    if(this.paused){
-                        try { this.wait(); }
-                        catch(InterruptedException e){ return; }
+            synchronized (this) {
+                if (this.paused) {
+                    try {
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        return;
+                    }
                     continue;   //omit delay when unpausing or stepping frame-by-frame
                 }
             }
-            try { Thread.sleep(FRAME_TIME); }
-            catch(InterruptedException e){ return; }
+            try {
+                Thread.sleep(FRAME_TIME);
+            } catch (InterruptedException e) { // a gdyby całe ciało metody opakować jednym try-catch?
+                return;
+            }
         }
     }
 
-    private void placeAnimals(){
+    private void placeAnimals() {
         List<Vector2d> availablePositions = new ArrayList<>();
-        for(SingleField field : worldMap.getAllFields())
+        for (SingleField field : worldMap.getAllFields())
             availablePositions.add(field.fieldPos);
         Collections.shuffle(availablePositions);
 
-        for(int i = worldMap.getSimulationOptions().beginningAnimalCount(); i > 0; i--)
+        for (int i = worldMap.getSimulationOptions().beginningAnimalCount(); i > 0; i--)
             worldMap.place(new Animal(worldMap, availablePositions.remove(availablePositions.size() - 1)));
     }
-    private void step(){
+
+    private void step() {
         //1: Grim Reaper Phase
-        for(Animal animal : worldMap.getAnimalsOnMap())
+        for (Animal animal : worldMap.getAnimalsOnMap())
             animal.meetGrimReaper();
 
         //2: Movement phase
-        for(Animal animal : worldMap.getAnimalsOnMap())
+        for (Animal animal : worldMap.getAnimalsOnMap())
             animal.move();
 
         //3 & 4: Eating phase and breeding phase
-        for(SingleField field : worldMap.getOccupiedFields())
+        for (SingleField field : worldMap.getOccupiedFields())
             field.eatAndBreed();
 
         //5: Growth phase

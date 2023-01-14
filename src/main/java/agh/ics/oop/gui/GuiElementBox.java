@@ -22,7 +22,7 @@ public class GuiElementBox {
 
     private final int ICON_SIZE = 30;
     private SingleField pointedField;
-     Label label;
+    Label label;  // modyfikator dostępu?
     private VBox vBox = new VBox();
     private Image img;
     ImageView imgView;
@@ -32,21 +32,28 @@ public class GuiElementBox {
     private String backgroundPath;
 
 
-    public VBox getGridElement(){ return this.vBox; }
+    public VBox getGridElement() {
+        return this.vBox;
+    }
 
-    public int getXCoordinate(){ return this.pointedField.fieldPos.x; }
-    public int getYCoordinate(){ return this.pointedField.fieldPos.y; }
+    public int getXCoordinate() {
+        return this.pointedField.fieldPos.x;
+    }
 
-    public GuiElementBox(SingleField mapElement){
+    public int getYCoordinate() {
+        return this.pointedField.fieldPos.y;
+    }
+
+    public GuiElementBox(SingleField mapElement) {
         pointedField = mapElement;
         updateObject();
     }
 
-    public void updateObject(){
+    public void updateObject() {
         this.label = new Label(this.pointedField.objectDescription());
         label.setFont(new Font("SegoeUI", 10));
 
-        if(!rescourcePath(pointedField.textureName()).equals(texturePath)) {
+        if (!rescourcePath(pointedField.textureName()).equals(texturePath)) {
             texturePath = rescourcePath(pointedField.textureName());
             try {
                 img = new Image(new FileInputStream(texturePath));
@@ -59,13 +66,13 @@ public class GuiElementBox {
             imgView.setFitHeight(ICON_SIZE);
         }
 
-        if(!rescourcePath(pointedField.backgroundTextureName()).equals(backgroundPath)) {
+        if (!rescourcePath(pointedField.backgroundTextureName()).equals(backgroundPath)) {
             backgroundPath = rescourcePath(pointedField.backgroundTextureName());
             try {
                 backgroundImg = new Image(new FileInputStream(backgroundPath));
             } catch (FileNotFoundException ex) {
                 System.err.println("Exception caught while loading textures: " + ex);
-                System.exit(-1);
+                System.exit(-1);  // nie za wcześnie? może lepiej przepuścić ten wyjątek wyżej?
             }
             backgroundImgView = new ImageView(backgroundImg);
             backgroundImgView.setFitWidth(ICON_SIZE);
@@ -79,7 +86,7 @@ public class GuiElementBox {
         vBox.setAlignment(Pos.BOTTOM_CENTER);
     }
 
-    private String rescourcePath(String filename){
+    private String rescourcePath(String filename) {
         return "src/main/rescources/" + filename + ".png";
     }
 }

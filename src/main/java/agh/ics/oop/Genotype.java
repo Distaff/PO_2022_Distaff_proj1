@@ -5,29 +5,29 @@ import java.util.List;
 import java.util.Random;
 
 public class Genotype {
-    private Random rand = new Random();
+    private static Random rand = new Random();
     private int currentGene = 0;
     private SimulationOptions simulationOptions;
     private List<Rotations> genes;
 
     public Rotations nextGene() {
-        if(simulationOptions.crazyBehavior() && rand.nextInt(100) < 20)
+        if (simulationOptions.crazyBehavior() && rand.nextInt(100) < 20)
             currentGene = rand.nextInt(simulationOptions.genotypeSize());
         else
             currentGene = (currentGene + 1) % simulationOptions.genotypeSize();
         return genes.get(currentGene);
     }
 
-    public Genotype(SimulationOptions simulationOptions){
+    public Genotype(SimulationOptions simulationOptions) {
         this.simulationOptions = simulationOptions;
         this.genes = new ArrayList<>();
 
-        for(int i = 0; i < simulationOptions.genotypeSize(); i++){
+        for (int i = 0; i < simulationOptions.genotypeSize(); i++) {
             this.genes.add(Rotations.values()[rand.nextInt(8)]);
         }
     }
 
-    public Genotype(Genotype genotype1, Genotype genotype2, float energyRatio){
+    public Genotype(Genotype genotype1, Genotype genotype2, float energyRatio) {
         this.simulationOptions = genotype1.simulationOptions;
         this.genes = new ArrayList<>();
 
@@ -35,29 +35,32 @@ public class Genotype {
         this.genes.addAll(genotype1.genes.subList(0, crossPoint));
         this.genes.addAll(genotype2.genes.subList(crossPoint, simulationOptions.genotypeSize()));
 
-        if(simulationOptions.heavyMutations())
+        if (simulationOptions.heavyMutations()) // if nie jest najlepszym rozwiązaniem
             heavilyMutate();
         else
             mutate();
     }
 
-    private void mutate(){
+    private void mutate() {
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
-        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
+        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()) {
             genes.set(mutatingGene, genes.get(mutatingGene).smallChange());
         }
     }
-    private void heavilyMutate(){
+
+    private void heavilyMutate() {
         int mutationsCount = rand.nextInt(simulationOptions.minMutationCount(), simulationOptions.maxMutationCount());
-        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()){
+        for (int mutatingGene : rand.ints(0, simulationOptions.genotypeSize()).distinct().limit(5).toArray()) {
             genes.set(mutatingGene, genes.get(mutatingGene).randomVal());
         }
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return genes.toString() + "; current active index: " + currentGene;
     }
 
-    public String description(){ return genes.toString(); }
+    public String description() {
+        return genes.toString();
+    }
 }

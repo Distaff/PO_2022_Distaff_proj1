@@ -32,7 +32,7 @@ public class SimulationUIApp {
     private List<GuiElementBox> usedBoxes = new ArrayList<>();
     final int CELLSIZE = 60;
 
-    public SimulationUIApp(SimulationOptions simulationOptions, int simulationID){
+    public SimulationUIApp(SimulationOptions simulationOptions, int simulationID) {
         this.stage = new Stage();
 
         this.simulationEngine = new SimulationEngine(simulationOptions, this, simulationID);
@@ -45,11 +45,11 @@ public class SimulationUIApp {
         this.grid = new GridPane();
 
         this.elementBoxes = new GuiElementBox[this.mapSizeY][this.mapSizeX];
-        for(SingleField field : worldMap.getAllFields()){
+        for (SingleField field : worldMap.getAllFields()) {
             this.elementBoxes[field.fieldPos.x][field.fieldPos.y] = new GuiElementBox(field);
         }
 
-        Scene scene = new Scene(this.grid, CELLSIZE*(mapSizeX+8), CELLSIZE*(mapSizeY+3));
+        Scene scene = new Scene(this.grid, CELLSIZE * (mapSizeX + 8), CELLSIZE * (mapSizeY + 3));
         this.stage.setScene(scene);
         this.stage.show();
 
@@ -82,7 +82,7 @@ public class SimulationUIApp {
             this.grid.getRowConstraints().add(new RowConstraints(CELLSIZE));
         }
 
-        for(SingleField field : worldMap.getAllFields()){
+        for (SingleField field : worldMap.getAllFields()) {
             GuiElementBox box = this.elementBoxes[field.fieldPos.x][field.fieldPos.y];
             box.updateObject();
 
@@ -93,7 +93,7 @@ public class SimulationUIApp {
         Button pauseButton = new Button("Pause");
         this.grid.add(pauseButton, this.mapSizeX + 2, 1, 3, 1);
         pauseButton.setOnAction((event) -> {
-            synchronized (this.simulationEngine){
+            synchronized (this.simulationEngine) {
                 this.simulationEngine.setPause(!this.simulationEngine.isPaused());
                 this.simulationEngine.notify();
             }
@@ -102,7 +102,7 @@ public class SimulationUIApp {
         Button nextFrameButton = new Button("Single Frame");
         this.grid.add(nextFrameButton, this.mapSizeX + 2, 2, 3, 1);
         nextFrameButton.setOnAction((event) -> {
-            synchronized (this.simulationEngine){
+            synchronized (this.simulationEngine) {
                 this.simulationEngine.setPause(true);
                 this.simulationEngine.notify();
             }
@@ -113,14 +113,15 @@ public class SimulationUIApp {
         this.statField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         GridPane.setFillHeight(this.statField, true);
 
-        this.grid.getColumnConstraints().add(new ColumnConstraints(CELLSIZE/2));
+        this.grid.getColumnConstraints().add(new ColumnConstraints(CELLSIZE / 2));
         this.grid.getColumnConstraints().add(new ColumnConstraints(CELLSIZE));
-        this.grid.getColumnConstraints().add(new ColumnConstraints(4*CELLSIZE));
+        this.grid.getColumnConstraints().add(new ColumnConstraints(4 * CELLSIZE));
 
         this.grid.setGridLinesVisible(false);
     }
+
     public void updateGuiMap() {
-        /*  //Something is wrong here - grass that no longer exists sometimes stays on screen
+        /*  //Something is wrong here - grass that no longer exists sometimes stays on screen // po to mamy gita, żeby móc bez większych obaw usunąć niepotrzebny kod
 
 
         //Refreshing fields that were used in last frame
@@ -144,8 +145,8 @@ public class SimulationUIApp {
         }
 
         */
-        for(GuiElementBox boxColumn[] : elementBoxes){
-            for(GuiElementBox box : boxColumn) {
+        for (GuiElementBox boxColumn[] : elementBoxes) {
+            for (GuiElementBox box : boxColumn) {
                 this.grid.getChildren().remove(box.getGridElement());
                 box.updateObject();
                 this.grid.add(box.getGridElement(), box.getXCoordinate() + 1, this.mapSizeY - box.getYCoordinate());

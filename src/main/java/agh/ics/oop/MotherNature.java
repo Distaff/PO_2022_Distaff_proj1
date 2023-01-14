@@ -8,7 +8,7 @@ public class MotherNature {
     private final IWorldMap worldMap;
     private final Random rand = new Random();
 
-    public MotherNature(IWorldMap worldMap, Comparator<SingleField> cmp){
+    public MotherNature(IWorldMap worldMap, Comparator<SingleField> cmp) {
         this.cmp = cmp;
         this.worldMap = worldMap;
         this.fields = worldMap.getAllFields();
@@ -16,11 +16,11 @@ public class MotherNature {
         plantGrass(worldMap.getSimulationOptions().beginningGrassCount());
     }
 
-    void plantGrass(int grassCount){
+    void plantGrass(int grassCount) {
         int privilegedCounter = 0;
         int unprivilegedCounter = 0;
-        for(int i = 0; i < grassCount; i++){
-            if(rand.nextInt(100) > 20) privilegedCounter++;
+        for (int i = 0; i < grassCount; i++) {
+            if (rand.nextInt(100) > 20) privilegedCounter++;
             else unprivilegedCounter++;
         }
 
@@ -31,8 +31,8 @@ public class MotherNature {
         Collections.shuffle(privilegedFields);
         Collections.shuffle(unprivilegedFields);
 
-        for(; privilegedCounter > 0; privilegedCounter--){
-            if(privilegedFields.size() < 1)
+        for (; privilegedCounter > 0; privilegedCounter--) {
+            if (privilegedFields.size() < 1)
                 break;
 
             SingleField field = privilegedFields.remove(privilegedFields.size() - 1);
@@ -41,8 +41,8 @@ public class MotherNature {
         }
 
         //If privileged fields are arleady full, planting on unprivilieged
-        for(int i = unprivilegedCounter + privilegedCounter; i > 0; i--){
-            if(unprivilegedFields.size() < 1)
+        for (int i = unprivilegedCounter + privilegedCounter; i > 0; i--) {
+            if (unprivilegedFields.size() < 1)
                 throw new IllegalArgumentException("Planting more grass than there are fields is not allowed!");
 
             SingleField field = unprivilegedFields.remove(privilegedFields.size() - 1);

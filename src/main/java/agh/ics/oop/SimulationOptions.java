@@ -30,7 +30,7 @@ public record SimulationOptions(
     }
 
 
-    static public SimulationOptions GetOptionsFromFile(File file){
+    static public SimulationOptions GetOptionsFromFile(File file) {
         //Default values
         boolean cursedGateway = false;
         boolean toxicCorpses = false;
@@ -110,21 +110,21 @@ public record SimulationOptions(
         }
 
         return new SimulationOptions(
-            cursedGateway,
-            toxicCorpses,
-            heavyMutations,
-            crazyBehavior,
-            mapSizeX,
-            mapSizeY,
-            beginningGrassCount,
-            dailyGrassCount,
-            singleGrassEnergy,
-            beginningAnimalCount,
-            breedingCost,
-            minBreedingEnergy,
-            minMutationCount,
-            maxMutationCount,
-            genotypeSize
+                cursedGateway,
+                toxicCorpses,
+                heavyMutations,
+                crazyBehavior,
+                mapSizeX,
+                mapSizeY,
+                beginningGrassCount,
+                dailyGrassCount,
+                singleGrassEnergy,
+                beginningAnimalCount,
+                breedingCost,
+                minBreedingEnergy,
+                minMutationCount,
+                maxMutationCount,
+                genotypeSize
         );
     }
 }

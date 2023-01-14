@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MapDirectionTest {
     @Test
-    public void next(){
+    public void next() {
         MapDirection testedObject = MapDirection.NORTH;
 
         testedObject = testedObject.next();
@@ -18,8 +18,9 @@ public class MapDirectionTest {
         testedObject = testedObject.next();
         assertEquals(testedObject, MapDirection.NORTH);
     }
+
     @Test
-    public void prev(){
+    public void prev() {
         MapDirection testedObject = MapDirection.NORTH;
 
         testedObject = testedObject.prev();

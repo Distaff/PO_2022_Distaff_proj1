@@ -18,15 +18,15 @@ public class LauncherApp extends Application {
     private int nextID = 0;
     private Stage launcherStage;
 
-    public String chooseFile(){
+    public String chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         File file = fileChooser.showOpenDialog(this.launcherStage);
-        if(file != null)
+        if (file != null)
             return file.getAbsolutePath();
         else
-            return "";
+            return "";  // na pewno?
     }
 
     @Override
@@ -63,7 +63,7 @@ public class LauncherApp extends Application {
         System.out.println("Done.");
     }
 
-    private void spawnSimulation(String filepath){
+    private void spawnSimulation(String filepath) {
         SimulationOptions simulationOptions = SimulationOptions.GetOptionsFromFile(filepath);
 
         SimulationUIApp simApp = new SimulationUIApp(simulationOptions, nextID++);
